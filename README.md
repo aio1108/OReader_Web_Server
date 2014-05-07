@@ -1,4 +1,4 @@
-OReader_Web_Server
+O-Reader Web Server
 ==================
 
-The Web server for O-Reader
+The Web server for O-Reader.
