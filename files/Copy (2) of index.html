@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+<head>
+	<!-- meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+ 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/pinterest-style.css" />
+	<link href="css/jquery.dataTables.css" rel="stylesheet">
+	<!-- Oreder客製化的CSS -->
+	<link href="css/Oreader_style.css" rel="stylesheet">
+	
+	    <!-- Bootstrap core JavaScript=========================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
+	<script type="text/javascript" src="js/freewall.js"></script>
+	<script src="js/bootbox.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="js/highcharts.js"></script>
+
+		<style type="text/css">
+			body {
+				background: rgba(231, 231, 231, 0.43);
+				padding-top:70px;
+			}
+			.free-wall {
+				margin: 15px;
+			}
+			.brick {
+				width: 221.2px;
+			}
+			.info {
+				padding: 15px;
+				color: #333;
+			}
+			.brick img {
+				margin: 0px;
+				padding: 0px;
+				display: block;
+			}
+		</style>
+  	<script type="text/javascript">
+  	
+  	$(document).ready(function() {
+  		//alert("123");
+		if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+			  var msViewportStyle = document.createElement('style')
+			  msViewportStyle.appendChild(
+				document.createTextNode(
+				  '@-ms-viewport{width:auto!important}'
+				)
+			  )
+			  document.querySelector('head').appendChild(msViewportStyle)
+		}
+		
+		/*
+ 		$.ajax({
+				type: 'POST',
+				url: 'http://127.0.0.1:8080/hyAPPServer/metaDS?key=open',
+				contentType: "application/x-www-form-urlencoded; charset=utf-8", 
+				dataType: 'json',
+				data: {
+					userId: "",
+				},
+				success: function(jsonData) {
+					var obj = jQuery.parseJSON(jsonData);
+					alert( obj.name);
+					//alert(jsonData);
+				}
+		});
+		*/
+		
+ 		
+ 		
+ 		$.getJSON("http://127.0.0.1:8080/hyAPPServer/metaDS?key=open", function(data){
+ 		    $.each(data, function (index, value) {
+ 		    	//alert(index);
+ 		    	//alert(value);
+ 		    	//var obj =  $.parseJSON(value);
+ 		    	alert(value.category);
+ 		        //console.log(value);
+ 		    });
+ 		});
+  		
+		var nua = navigator.userAgent
+		var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
+		if (isAndroid) {
+		  $('select.form-control').removeClass('form-control').css('width', '100%')
+		}
+
+		//highcharts
+		$('#example').dataTable();
+		
+		$('#chartViewContainer').highcharts({
+            chart: {
+                type: 'spline',
+                events: {
+                	load: function(event) {
+                        //alert ('load');
+                    },
+                    redraw: function(event) {
+                        //alert ('redraw');
+                    }
+                }   
+            },
+            title: {
+                text: 'Snow depth at Vikjafjellet, Norway'
+            },
+            subtitle: {
+                text: 'Irregular time data in Highcharts JS'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Snow depth (m)'
+                },
+                min: 0
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b><br>',
+                pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+            },
+            series: [{
+                name: 'Winter 2007-2008',
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: [
+                    [Date.UTC(1970,  9, 27), 0   ],
+                    [Date.UTC(1970, 10, 10), 0.6 ],
+                    [Date.UTC(1970, 10, 18), 0.7 ],
+                    [Date.UTC(1970, 11,  2), 0.8 ],
+                    [Date.UTC(1970, 11,  9), 0.6 ],
+                    [Date.UTC(1970, 11, 16), 0.6 ],
+                    [Date.UTC(1970, 11, 28), 0.67],
+                    [Date.UTC(1971,  0,  1), 0.81],
+                    [Date.UTC(1971,  0,  8), 0.78],
+                    [Date.UTC(1971,  0, 12), 0.98],
+                    [Date.UTC(1971,  0, 27), 1.84],
+                    [Date.UTC(1971,  1, 10), 1.80],
+                    [Date.UTC(1971,  1, 18), 1.80],
+                    [Date.UTC(1971,  1, 24), 1.92],
+                    [Date.UTC(1971,  2,  4), 2.49],
+                    [Date.UTC(1971,  2, 11), 2.79],
+                    [Date.UTC(1971,  2, 15), 2.73],
+                    [Date.UTC(1971,  2, 25), 2.61],
+                    [Date.UTC(1971,  3,  2), 2.76],
+                    [Date.UTC(1971,  3,  6), 2.82],
+                    [Date.UTC(1971,  3, 13), 2.8 ],
+                    [Date.UTC(1971,  4,  3), 2.1 ],
+                    [Date.UTC(1971,  4, 26), 1.1 ],
+                    [Date.UTC(1971,  5,  9), 0.25],
+                    [Date.UTC(1971,  5, 12), 0   ]
+                ]
+            }, {
+                name: 'Winter 2008-2009',
+                data: [
+                    [Date.UTC(1970,  9, 18), 0   ],
+                    [Date.UTC(1970,  9, 26), 0.2 ],
+                    [Date.UTC(1970, 11,  1), 0.47],
+                    [Date.UTC(1970, 11, 11), 0.55],
+                    [Date.UTC(1970, 11, 25), 1.38],
+                    [Date.UTC(1971,  0,  8), 1.38],
+                    [Date.UTC(1971,  0, 15), 1.38],
+                    [Date.UTC(1971,  1,  1), 1.38],
+                    [Date.UTC(1971,  1,  8), 1.48],
+                    [Date.UTC(1971,  1, 21), 1.5 ],
+                    [Date.UTC(1971,  2, 12), 1.89],
+                    [Date.UTC(1971,  2, 25), 2.0 ],
+                    [Date.UTC(1971,  3,  4), 1.94],
+                    [Date.UTC(1971,  3,  9), 1.91],
+                    [Date.UTC(1971,  3, 13), 1.75],
+                    [Date.UTC(1971,  3, 19), 1.6 ],
+                    [Date.UTC(1971,  4, 25), 0.6 ],
+                    [Date.UTC(1971,  4, 31), 0.35],
+                    [Date.UTC(1971,  5,  7), 0   ]
+                ]
+            }, {
+                name: 'Winter 2009-2010',
+                data: [
+                    [Date.UTC(1970,  9,  9), 0   ],
+                    [Date.UTC(1970,  9, 14), 0.15],
+                    [Date.UTC(1970, 10, 28), 0.35],
+                    [Date.UTC(1970, 11, 12), 0.46],
+                    [Date.UTC(1971,  0,  1), 0.59],
+                    [Date.UTC(1971,  0, 24), 0.58],
+                    [Date.UTC(1971,  1,  1), 0.62],
+                    [Date.UTC(1971,  1,  7), 0.65],
+                    [Date.UTC(1971,  1, 23), 0.77],
+                    [Date.UTC(1971,  2,  8), 0.77],
+                    [Date.UTC(1971,  2, 14), 0.79],
+                    [Date.UTC(1971,  2, 24), 0.86],
+                    [Date.UTC(1971,  3,  4), 0.8 ],
+                    [Date.UTC(1971,  3, 18), 0.94],
+                    [Date.UTC(1971,  3, 24), 0.9 ],
+                    [Date.UTC(1971,  4, 16), 0.39],
+                    [Date.UTC(1971,  4, 21), 0   ]
+                ]
+            }]
+        });
+		 //$('#chartViewContainer').resize();
+		 var chart = $('#chartViewContainer').highcharts();
+		 $(window).resize(function() {
+			 	//alert("22");
+			    //height = chart.height;
+			    //width = $("#chartViewContainer").width();
+			    //chart.setSize(width, height, doAnimation = true);
+		});
+		 
+		 $('.carousel-indicators li').click(function(e){
+			   // e.stopPropagation();
+			    var goTo = $(this).data('slide-to');
+			    //alert(goTo);
+			    if(goTo==2)
+			    {
+			    	setTimeout("$(window).resize();", 100);	
+			    }
+			    
+		});
+		 
+		 
+		 $('a[data-slide=next]').click(function() {
+			//alert($('.active').attr('data-slide-to'));
+			if($('.active').attr('data-slide-to')==1)
+			{
+				setTimeout("$(window).resize();", 100);	 
+			}
+			else if($('.active').attr('data-slide-to')==2)
+			{
+				$('#view_map2').append("<iframe name='googleTarget' src='https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334' width='100%' height='400' frameborder='0' style='border:0'></iframe>");
+				//setTimeout("$(window).resize();", 100);	 
+			}
+			
+		 });
+		 $('a[data-slide=prev]').click(function() {
+			//alert($('.active').attr('data-slide-to'));
+			if($('.active').attr('data-slide-to')==0)
+			{
+				$('#view_map2').append("<iframe name='googleTarget' src='https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334' width='100%' height='400' frameborder='0' style='border:0'></iframe>");
+				//setTimeout("$(window).resize();", 100);	 
+			}
+			else if($('.active').attr('data-slide-to')==3)
+			{
+				//$('#view_map2').append("<iframe name='googleTarget' src='https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334' width='100%' height='400' frameborder='0' style='border:0'></iframe>");
+				setTimeout("$(window).resize();", 100);	 
+			}
+		});
+		 
+		 //$('iframe[name=googleTarget]').attr("src","https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334");
+		 
+		 
+	  		/*
+			var wall = new freewall("#freewall");
+			wall.reset({
+				selector: '.brick',
+				animate: true,
+				cellW: 200,
+				cellH: 'auto',
+				onResize: function() {
+					wall.fitWidth();
+				}
+			});
+			
+			var images = wall.container.find('.brick');
+			var length = images.length;
+			images.css({visibility: 'hidden'});
+			images.find('img').load(function() {
+				-- length;
+				if (!length) {
+					setTimeout(function() {
+						images.css({visibility: 'visible'});
+						wall.fitWidth();
+					}, 505);
+				}
+			});
+			*/
+		 
+		 
+  	});
+	</script>
+	
+	
+</head>
+
+  <body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="img/OReader_logo.png" width="150px" height="40px"></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="#" data-toggle="collapse" data-target="#searchBlock"><img src="img/OReader_icon_search.png" width="30px" height="30px"> 搜尋</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#loginBlock"><img src="img/OReader_icon_user.png" width="30px" height="30px"> 使用者</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	<!--搜尋彈出區塊-->
+	<div id="searchBlock" class="collapse">
+		<div class="container">				
+			<form class="form-horizontal">
+				<fieldset>
+
+					<!-- Form Name -->
+					<legend>Form Name</legend>
+
+					<!-- Text input-->
+					<div class="control-group">
+					  <label class="control-label" for="data_description">data_description</label>
+					  <div class="controls">
+						<input id="data_description" name="data_description" type="text" placeholder="" class="input-xlarge">
+						<p class="help-block">s</p>
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="control-group">
+					  <label class="control-label" for="column">主要欄位說明</label>
+					  <div class="controls">
+						<input id="column" name="column" type="text" placeholder="輸入欄位名稱" class="input-xlarge">
+						<p class="help-block">help</p>
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="control-group">
+					  <label class="control-label" for="holder">資料提供機關</label>
+					  <div class="controls">
+						<input id="holder" name="holder" type="text" placeholder="" class="input-xlarge">
+						<p class="help-block">help</p>
+					  </div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+					  <label class="control-label" for="frequency">更新頻率</label>
+					  <div class="controls">
+						<select id="frequency" name="frequency" class="input-xlarge">
+						  <option>不定期</option>
+						  <option>每日</option>
+						  <option>每週</option>
+						  <option>每月</option>
+						  <option>每季</option>
+						  <option>半年</option>
+						  <option>每年</option>
+						</select>
+					  </div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+					  <label class="control-label" for="price">計費方式</label>
+					  <div class="controls">
+						<select id="price" name="price" class="input-xlarge">
+						  <option>免費</option>
+						  <option>付費使用</option>
+						</select>
+					  </div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+					  <label class="control-label" for="datatype">資料提供格式</label>
+					  <div class="controls">
+						<select id="datatype" name="datatype" class="input-xlarge">
+						  <option>JSON</option>
+						  <option>XML</option>
+						  <option>CSV</option>
+						  <option>DOC</option>
+						  <option>PDF</option>
+						</select>
+					  </div>
+					</div>
+
+				</fieldset>
+			</form>	
+		</div>
+	</div>
+	
+	
+	<!--主畫面開始-->
+    <div class="container">
+		<!--FREEWALL 呈現區塊-->
+		<div id="freewall" class="free-wall">
+		    <div class="brick">
+				<a href="#" data-toggle="modal" data-target="#myModal">
+					<img src="img/view/chart.png" width="100%">
+					<div class="info">
+						<h3>景氣指標</h3>
+						<h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+					</div>
+				</a>
+			</div>
+		    <div class="brick" >
+				<a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/chart.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/chart.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/chart.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/map.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/chart.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		    <div class="brick"><a href="#" data-toggle="modal" data-target="#myModal">
+		        <img src="img/view/table.png" width="100%">
+		        <div class="info">
+		            <h3>景氣指標</h3>
+		            <h5>更新頻率：每月<br/>提供機關：國家發展委員會</h5><div class="read-more">觀看詳細資料...</div>
+		        </div>
+		    </a></div>
+		</div>
+
+    </div>
+	
+	<!-- 彈出的登入視窗-->
+		<div class="modal fade" id="loginBlock" tabindex="-2" role="dialog" aria-labelledby="loginBlockLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">使用者</h4>
+					</div>
+					<div class="modal-body">
+						Facebook | Google
+					</div>
+				  <!--
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				  </div>
+				  -->
+				</div>
+			</div>
+		</div>
+		
+		<!-- 彈出的內容頁視窗 -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">景氣指標</h4>
+					</div>
+					<div class="modal-body">
+						<!--資料輪播View-->
+						<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+						  <!-- Indicators -->
+						  <ol class="carousel-indicators">
+							<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="3"></li>
+						  </ol>
+
+						  <!-- Wrapper for slides -->
+						  <div class="carousel-inner">
+							<div class="item active">
+							  <div id="view_map" style="width:100%; height:400px;">
+									<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334" width="100%" height="400" frameborder="0" style="border:0"></iframe>
+								</div>
+							  <div class="carousel-caption">
+								...
+							  </div>
+							</div>
+							<div class="item">
+							  <div id="view_table" style="width:100%; height:400px;">
+								<!--datatable內容-->
+								<table id="example" class="display" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Position</th>
+											<th>Office</th>
+											<th>Age</th>
+											<th>Start date</th>
+											<th>Salary</th>
+										</tr>
+									</thead>
+							 
+									<tfoot>
+										<tr>
+											<th>Name</th>
+											<th>Position</th>
+											<th>Office</th>
+											<th>Age</th>
+											<th>Start date</th>
+											<th>Salary</th>
+										</tr>
+									</tfoot>
+							 
+									<tbody>
+										<tr>
+											<td>Tiger Nixon</td>
+											<td>System Architect</td>
+											<td>Edinburgh</td>
+											<td>61</td>
+											<td>2011/04/25</td>
+											<td>$320,800</td>
+										</tr>
+										<tr>
+											<td>Garrett Winters</td>
+											<td>Accountant</td>
+											<td>Tokyo</td>
+											<td>63</td>
+											<td>2011/07/25</td>
+											<td>$170,750</td>
+										</tr>
+										<tr>
+											<td>Ashton Cox</td>
+											<td>Junior Technical Author</td>
+											<td>San Francisco</td>
+											<td>66</td>
+											<td>2009/01/12</td>
+											<td>$86,000</td>
+										</tr>
+										<tr>
+											<td>Cedric Kelly</td>
+											<td>Senior Javascript Developer</td>
+											<td>Edinburgh</td>
+											<td>22</td>
+											<td>2012/03/29</td>
+											<td>$433,060</td>
+										</tr>
+										<tr>
+											<td>Airi Satou</td>
+											<td>Accountant</td>
+											<td>Tokyo</td>
+											<td>33</td>
+											<td>2008/11/28</td>
+											<td>$162,700</td>
+										</tr>
+										<tr>
+											<td>Brielle Williamson</td>
+											<td>Integration Specialist</td>
+											<td>New York</td>
+											<td>61</td>
+											<td>2012/12/02</td>
+											<td>$372,000</td>
+										</tr>
+										<tr>
+											<td>Herrod Chandler</td>
+											<td>Sales Assistant</td>
+											<td>San Francisco</td>
+											<td>59</td>
+											<td>2012/08/06</td>
+											<td>$137,500</td>
+										</tr>
+										<tr>
+											<td>Rhona Davidson</td>
+											<td>Integration Specialist</td>
+											<td>Tokyo</td>
+											<td>55</td>
+											<td>2010/10/14</td>
+											<td>$327,900</td>
+										</tr>
+										<tr>
+											<td>Colleen Hurst</td>
+											<td>Javascript Developer</td>
+											<td>San Francisco</td>
+											<td>39</td>
+											<td>2009/09/15</td>
+											<td>$205,500</td>
+										</tr>
+										<tr>
+											<td>Sonya Frost</td>
+											<td>Software Engineer</td>
+											<td>Edinburgh</td>
+											<td>23</td>
+											<td>2008/12/13</td>
+											<td>$103,600</td>
+										</tr>
+										<tr>
+											<td>Jena Gaines</td>
+											<td>Office Manager</td>
+											<td>London</td>
+											<td>30</td>
+											<td>2008/12/19</td>
+											<td>$90,560</td>
+										</tr>
+										<tr>
+											<td>Quinn Flynn</td>
+											<td>Support Lead</td>
+											<td>Edinburgh</td>
+											<td>22</td>
+											<td>2013/03/03</td>
+											<td>$342,000</td>
+										</tr>
+										<tr>
+											<td>Charde Marshall</td>
+											<td>Regional Director</td>
+											<td>San Francisco</td>
+											<td>36</td>
+											<td>2008/10/16</td>
+											<td>$470,600</td>
+										</tr>
+										<tr>
+											<td>Haley Kennedy</td>
+											<td>Senior Marketing Designer</td>
+											<td>London</td>
+											<td>43</td>
+											<td>2012/12/18</td>
+											<td>$313,500</td>
+										</tr>
+										<tr>
+											<td>Tatyana Fitzpatrick</td>
+											<td>Regional Director</td>
+											<td>London</td>
+											<td>19</td>
+											<td>2010/03/17</td>
+											<td>$385,750</td>
+										</tr>
+										<tr>
+											<td>Michael Silva</td>
+											<td>Marketing Designer</td>
+											<td>London</td>
+											<td>66</td>
+											<td>2012/11/27</td>
+											<td>$198,500</td>
+										</tr>
+										<tr>
+											<td>Paul Byrd</td>
+											<td>Chief Financial Officer (CFO)</td>
+											<td>New York</td>
+											<td>64</td>
+											<td>2010/06/09</td>
+											<td>$725,000</td>
+										</tr>
+										<tr>
+											<td>Gloria Little</td>
+											<td>Systems Administrator</td>
+											<td>New York</td>
+											<td>59</td>
+											<td>2009/04/10</td>
+											<td>$237,500</td>
+										</tr>
+										<tr>
+											<td>Bradley Greer</td>
+											<td>Software Engineer</td>
+											<td>London</td>
+											<td>41</td>
+											<td>2012/10/13</td>
+											<td>$132,000</td>
+										</tr>
+										<tr>
+											<td>Dai Rios</td>
+											<td>Personnel Lead</td>
+											<td>Edinburgh</td>
+											<td>35</td>
+											<td>2012/09/26</td>
+											<td>$217,500</td>
+										</tr>
+										<tr>
+											<td>Jenette Caldwell</td>
+											<td>Development Lead</td>
+											<td>New York</td>
+											<td>30</td>
+											<td>2011/09/03</td>
+											<td>$345,000</td>
+										</tr>
+										<tr>
+											<td>Yuri Berry</td>
+											<td>Chief Marketing Officer (CMO)</td>
+											<td>New York</td>
+											<td>40</td>
+											<td>2009/06/25</td>
+											<td>$675,000</td>
+										</tr>
+										<tr>
+											<td>Caesar Vance</td>
+											<td>Pre-Sales Support</td>
+											<td>New York</td>
+											<td>21</td>
+											<td>2011/12/12</td>
+											<td>$106,450</td>
+										</tr>
+										<tr>
+											<td>Doris Wilder</td>
+											<td>Sales Assistant</td>
+											<td>Sidney</td>
+											<td>23</td>
+											<td>2010/09/20</td>
+											<td>$85,600</td>
+										</tr>
+										<tr>
+											<td>Angelica Ramos</td>
+											<td>Chief Executive Officer (CEO)</td>
+											<td>London</td>
+											<td>47</td>
+											<td>2009/10/09</td>
+											<td>$1,200,000</td>
+										</tr>
+										<tr>
+											<td>Gavin Joyce</td>
+											<td>Developer</td>
+											<td>Edinburgh</td>
+											<td>42</td>
+											<td>2010/12/22</td>
+											<td>$92,575</td>
+										</tr>
+										<tr>
+											<td>Jennifer Chang</td>
+											<td>Regional Director</td>
+											<td>Singapore</td>
+											<td>28</td>
+											<td>2010/11/14</td>
+											<td>$357,650</td>
+										</tr>
+										<tr>
+											<td>Brenden Wagner</td>
+											<td>Software Engineer</td>
+											<td>San Francisco</td>
+											<td>28</td>
+											<td>2011/06/07</td>
+											<td>$206,850</td>
+										</tr>
+										<tr>
+											<td>Fiona Green</td>
+											<td>Chief Operating Officer (COO)</td>
+											<td>San Francisco</td>
+											<td>48</td>
+											<td>2010/03/11</td>
+											<td>$850,000</td>
+										</tr>
+										<tr>
+											<td>Shou Itou</td>
+											<td>Regional Marketing</td>
+											<td>Tokyo</td>
+											<td>20</td>
+											<td>2011/08/14</td>
+											<td>$163,000</td>
+										</tr>
+										<tr>
+											<td>Michelle House</td>
+											<td>Integration Specialist</td>
+											<td>Sidney</td>
+											<td>37</td>
+											<td>2011/06/02</td>
+											<td>$95,400</td>
+										</tr>
+										<tr>
+											<td>Suki Burks</td>
+											<td>Developer</td>
+											<td>London</td>
+											<td>53</td>
+											<td>2009/10/22</td>
+											<td>$114,500</td>
+										</tr>
+										<tr>
+											<td>Prescott Bartlett</td>
+											<td>Technical Author</td>
+											<td>London</td>
+											<td>27</td>
+											<td>2011/05/07</td>
+											<td>$145,000</td>
+										</tr>
+										<tr>
+											<td>Gavin Cortez</td>
+											<td>Team Leader</td>
+											<td>San Francisco</td>
+											<td>22</td>
+											<td>2008/10/26</td>
+											<td>$235,500</td>
+										</tr>
+										<tr>
+											<td>Martena Mccray</td>
+											<td>Post-Sales support</td>
+											<td>Edinburgh</td>
+											<td>46</td>
+											<td>2011/03/09</td>
+											<td>$324,050</td>
+										</tr>
+										<tr>
+											<td>Unity Butler</td>
+											<td>Marketing Designer</td>
+											<td>San Francisco</td>
+											<td>47</td>
+											<td>2009/12/09</td>
+											<td>$85,675</td>
+										</tr>
+										<tr>
+											<td>Howard Hatfield</td>
+											<td>Office Manager</td>
+											<td>San Francisco</td>
+											<td>51</td>
+											<td>2008/12/16</td>
+											<td>$164,500</td>
+										</tr>
+										<tr>
+											<td>Hope Fuentes</td>
+											<td>Secretary</td>
+											<td>San Francisco</td>
+											<td>41</td>
+											<td>2010/02/12</td>
+											<td>$109,850</td>
+										</tr>
+										<tr>
+											<td>Vivian Harrell</td>
+											<td>Financial Controller</td>
+											<td>San Francisco</td>
+											<td>62</td>
+											<td>2009/02/14</td>
+											<td>$452,500</td>
+										</tr>
+										<tr>
+											<td>Timothy Mooney</td>
+											<td>Office Manager</td>
+											<td>London</td>
+											<td>37</td>
+											<td>2008/12/11</td>
+											<td>$136,200</td>
+										</tr>
+										<tr>
+											<td>Jackson Bradshaw</td>
+											<td>Director</td>
+											<td>New York</td>
+											<td>65</td>
+											<td>2008/09/26</td>
+											<td>$645,750</td>
+										</tr>
+										<tr>
+											<td>Olivia Liang</td>
+											<td>Support Engineer</td>
+											<td>Singapore</td>
+											<td>64</td>
+											<td>2011/02/03</td>
+											<td>$234,500</td>
+										</tr>
+										<tr>
+											<td>Bruno Nash</td>
+											<td>Software Engineer</td>
+											<td>London</td>
+											<td>38</td>
+											<td>2011/05/03</td>
+											<td>$163,500</td>
+										</tr>
+										<tr>
+											<td>Sakura Yamamoto</td>
+											<td>Support Engineer</td>
+											<td>Tokyo</td>
+											<td>37</td>
+											<td>2009/08/19</td>
+											<td>$139,575</td>
+										</tr>
+										<tr>
+											<td>Thor Walton</td>
+											<td>Developer</td>
+											<td>New York</td>
+											<td>61</td>
+											<td>2013/08/11</td>
+											<td>$98,540</td>
+										</tr>
+										<tr>
+											<td>Finn Camacho</td>
+											<td>Support Engineer</td>
+											<td>San Francisco</td>
+											<td>47</td>
+											<td>2009/07/07</td>
+											<td>$87,500</td>
+										</tr>
+										<tr>
+											<td>Serge Baldwin</td>
+											<td>Data Coordinator</td>
+											<td>Singapore</td>
+											<td>64</td>
+											<td>2012/04/09</td>
+											<td>$138,575</td>
+										</tr>
+										<tr>
+											<td>Zenaida Frank</td>
+											<td>Software Engineer</td>
+											<td>New York</td>
+											<td>63</td>
+											<td>2010/01/04</td>
+											<td>$125,250</td>
+										</tr>
+										<tr>
+											<td>Zorita Serrano</td>
+											<td>Software Engineer</td>
+											<td>San Francisco</td>
+											<td>56</td>
+											<td>2012/06/01</td>
+											<td>$115,000</td>
+										</tr>
+										<tr>
+											<td>Jennifer Acosta</td>
+											<td>Junior Javascript Developer</td>
+											<td>Edinburgh</td>
+											<td>43</td>
+											<td>2013/02/01</td>
+											<td>$75,650</td>
+										</tr>
+										<tr>
+											<td>Cara Stevens</td>
+											<td>Sales Assistant</td>
+											<td>New York</td>
+											<td>46</td>
+											<td>2011/12/06</td>
+											<td>$145,600</td>
+										</tr>
+										<tr>
+											<td>Hermione Butler</td>
+											<td>Regional Director</td>
+											<td>London</td>
+											<td>47</td>
+											<td>2011/03/21</td>
+											<td>$356,250</td>
+										</tr>
+										<tr>
+											<td>Lael Greer</td>
+											<td>Systems Administrator</td>
+											<td>London</td>
+											<td>21</td>
+											<td>2009/02/27</td>
+											<td>$103,500</td>
+										</tr>
+										<tr>
+											<td>Jonas Alexander</td>
+											<td>Developer</td>
+											<td>San Francisco</td>
+											<td>30</td>
+											<td>2010/07/14</td>
+											<td>$86,500</td>
+										</tr>
+										<tr>
+											<td>Shad Decker</td>
+											<td>Regional Director</td>
+											<td>Edinburgh</td>
+											<td>51</td>
+											<td>2008/11/13</td>
+											<td>$183,000</td>
+										</tr>
+										<tr>
+											<td>Michael Bruce</td>
+											<td>Javascript Developer</td>
+											<td>Singapore</td>
+											<td>29</td>
+											<td>2011/06/27</td>
+											<td>$183,000</td>
+										</tr>
+										<tr>
+											<td>Donna Snider</td>
+											<td>Customer Support</td>
+											<td>New York</td>
+											<td>27</td>
+											<td>2011/01/25</td>
+											<td>$112,000</td>
+										</tr>
+									</tbody>
+								</table>
+							  </div>
+							  <div class="carousel-caption">
+								view_table
+							  </div>
+							</div>
+							<div class="item">
+							  <div id="view_chart" style="width:100%; height:400px; border:#C00 2px solid;">
+								<!--圖內容-->
+								<div id="chartViewContainer" style="height: 400px; width:auto;"></div>
+
+							  </div>
+							  <div class="carousel-caption">
+								view_chart
+							  </div>
+							</div>
+							<div class="item">
+							  <div id="view_map2" style="width:100%; height:400px;">
+									
+							  </div>
+							  <div class="carousel-caption">
+								text2
+							  </div>
+							</div>
+						  </div>
+
+						  <!-- Controls -->
+						  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left"></span>
+						  </a>
+						  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"></span>
+						  </a>
+						</div>
+						<!--
+						<div id="view_map" style="width:100%; height:400px;">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334" width="100%" height="400" frameborder="0" style="border:0"></iframe>
+						</div>-->
+						<!--
+						<div id="view_table" style="width:100%; height:400px; border:#C00 2px solid;"></div>
+						<div id="view_chart" style="width:100%; height:400px; border:#C00 2px solid;"></div>-->
+						<!--功能區塊-->
+						<div id="function_Bar" style="background:#000;">
+							<span>檢視：<a href="">表格</a> ｜ <a href="">圖</a> ｜ <a href="">地圖</a></span>　　
+							<span>資料格式：<a href="">JSON</a> ｜ <a href="">XML</a> ｜ <a href="">CSV</a></span>　　
+							<span>分享：<a href="">Facebook</a> ｜ <a href="">Google+</a> ｜ <a href="">Plurk</a> ｜ <a href="">Twitter</a></span>　　
+							<span><a href="">最愛</a></span>
+						</div>
+						<!--資訊內容區塊-->
+						<div id="content_block" style="padding:15px;">
+							<table summary="最新資料-臺中市不動產經紀業名冊" style="color:#000;">
+								<tr>
+								<th width="100px">檔案格式</th><td>XLS</td>
+								</tr>
+								<tr>
+								<th>更新頻率</th><td>每月</td>
+								</tr>
+								<tr>
+								<th>流通供應單位電話</th><td>04-22170716</td>
+								</tr>
+								<tr>
+								<th>欄位說明</th><td>登錄號碼,統一編號,經紀業名稱,許可日期1,許可文號1,設立備查日期,設立備查文號,地址,加盟經營，加盟公司名稱,組織型態,營業項目(不動產仲介經紀業),營業項目(不動產代銷經紀業),經營國外不動產仲介或代銷業務,負責人姓名,加入公會名稱1,加入公會名稱2,執業狀態</td>
+								</tr>
+								<tr>
+								<th>檔案下載</th><td><a target="_blank" href="public/data/f1400115719847.xls">http://data.taichung.gov.tw:80/GipOpenWeb/wSite/public/data/f1400115719847.xls</a></td>
+								</tr>
+								<tr>
+								<th>單位</th><td>臺中市政府地政局‧資訊室</td>
+								</tr>
+								<tr>
+								<th>資料大類</th><td>住房建築</td>
+								</tr>
+								<tr>
+								<th>收錄期間(起)</th><td><span class="date">2014/05/14</span></td>
+								</tr>
+								<tr>
+								<th>收錄期間(迄)</th><td><span class="date">2014/05/14</span></td>
+								</tr>
+								<tr>
+								<th>最新更新日</th><td><span class="date">2014/05/15</span></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				  <!--
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				  </div>
+				  -->
+				</div>
+			</div>
+		</div>
+	<!-- /.container -->	
+    <!-- footer
+    ================================================== -->	
+    <div id="footer" style="background-color: #222;
+		border-color: #080808;
+		bottom: 0;
+		margin-bottom: 0;
+		border-width: 1px 0 0;
+		position: fixed;
+		right: 0;
+		left: 0;
+		z-index: 1030;
+		min-height: 50px;
+		border: 1px solid transparent;
+			text-align:center;
+			font-size:12px;
+			padding:5px;
+			margin:5px;
+			color:#FFF;
+			margin:0px;">
+        <div class="navbar-footer">
+            <a href="#">關於本站</a>
+			<a href="#">聯絡我們</a>
+			<a href="#">使用說明</a>
+			<a href="#">贊助資訊</a>
+		</div>
+		<div>Copyright © 2014 Userful Peoples</div>
+
+    </div>
+    	<script type="text/javascript">
+			
+			var wall = new freewall("#freewall");
+			wall.reset({
+				selector: '.brick',
+				animate: true,
+				cellW: 200,
+				cellH: 'auto',
+				onResize: function() {
+					wall.fitWidth();
+				}
+			});
+			
+			var images = wall.container.find('.brick');
+			var length = images.length;
+			images.css({visibility: 'hidden'});
+			images.find('img').load(function() {
+				-- length;
+				if (!length) {
+					setTimeout(function() {
+						images.css({visibility: 'visible'});
+						wall.fitWidth();
+					}, 505);
+				}
+			});
+
+		</script>		
+		<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
