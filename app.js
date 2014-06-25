@@ -32,6 +32,10 @@ app.get('/', router.routes.index);
 
 app.get('/test/client', router.routes.io_test);
 
+app.get('/bootstrap', router.routes.bootstrap);
+
+app.get('/bootstrap2', router.routes.bootstrap2);
+
 app.io.route('ready', io_router.routes.io_test);
 
 app.listen(app.get('port'));

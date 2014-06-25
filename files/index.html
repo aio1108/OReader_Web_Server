@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+<head>
+	<!-- meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+ 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/pinterest-style.css" />
+	<link href="css/jquery.dataTables.css" rel="stylesheet">
+	<!-- Oreder客製化的CSS -->
+	<link href="css/Oreader_style.css" rel="stylesheet">
+	
+	    <!-- Bootstrap core JavaScript=========================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
+	<script type="text/javascript" src="js/freewall.js"></script>
+	<script src="js/bootbox.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="js/highcharts.js"></script>
+
+		<style type="text/css">
+			body {
+				background: rgba(231, 231, 231, 0.43);
+				padding-top:70px;
+			}
+			.free-wall {
+				margin: 15px;
+			}
+			.brick {
+				width: 221.2px;
+			}
+			.info {
+				padding: 15px;
+				color: #333;
+			}
+			.brick img {
+				margin: 0px;
+				padding: 0px;
+				display: block;
+			}
+		</style>
+  	<script type="text/javascript">
+  	var serverURL="http://127.0.0.1:8081/hyAPPServer/";
+  	$(document).ready(function() {
+		if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+			  var msViewportStyle = document.createElement('style')
+			  msViewportStyle.appendChild(
+				document.createTextNode(
+				  '@-ms-viewport{width:auto!important}'
+				)
+			  )
+			  document.querySelector('head').appendChild(msViewportStyle)
+		}
+		
+ 		
+ 		$.getJSON(serverURL+"categoryDS", function(data){
+ 			$('#category').append("<option value='-1'>請選擇</option>");
+ 		    $.each(data, function (index, value) {
+ 		    	var option_html="<option value="+value._id+">"+value.name+"</option>";
+ 		    	$('#category').append(option_html);
+ 	 		    //alert(value.name);
+ 		    });
+ 		});
+ 		$(document).on("click", "a[data-toggle=modal]", function(e) {
+ 		//$('a[data-toggle=modal]').click(function(e) {
+ 			e.preventDefault();
+ 			 var triggerA=$(this);
+ 			 var appendTarget=$(triggerA).attr('data-target');
+ 			 if($.trim($(appendTarget).find('.modal-body').html())=="")
+ 			 {
+ 	 			 var action = $(this).find('#infoStorage').attr('attr1');
+ 	 			 //alert($(triggerA).attr('data-target'));
+ 	 			 var getDataURL=serverURL+"hyAppDS?_action="+action;
+ 	 			 var modal_id = $(triggerA).attr('data-target');
+ 	 			 modal_id=modal_id.substring(1, modal_id.length);
+ 	 			 $.get(getDataURL, function(data) {
+ 	 				 
+ 	 				/* 表格
+ 	 				  var appendStr="";
+ 	 				 appendStr=appendStr+"<table id='"+modal_id+"' class='display' cellspacing='0' width='100%'><thead><tr><th>date</th><th>領先指標綜合指數</th><th>領先指標不含趨勢指數</th><th>同時指標綜合指數</th><th>同時指標不含趨勢指數</th><th>落後指標綜合指數</th><th>落後指標不含趨勢指數</th></thead><tbody>"
+ 	 				  
+ 	 				 $.each(data.data.root.records, function (index, value) {
+ 		 		    		appendStr=appendStr+"<tr><td>"+value.date+"</td><td>"+value.leadGeneralIndicator+"</td><td>"+value.leadGeneralIndicatorWithoutTrend+"</td><td>"+value.sameGeneralIndicator+"</td><td>"+value.sameGeneralIndicatorWithoutTrend+"</td><td>"+value.behindGeneralIndicator+"</td><td>"+value.behindGeneralIndicatorWithoutTrend+"</td></tr>"
+ 		 		     });
+ 	 				appendStr=appendStr+"</tbody></table>"; 
+ 	 				
+ 	 				$('body').append(appendStr);
+ 	 				
+ 	 		    	$('body table').last().dataTable({
+ 		 		           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+ 		 		        });
+ 	 		    	$(appendTarget).find('.modal-body').append($("#"+modal_id+"_wrapper"));
+ 	 		    	
+ 	 		    	*/
+ 	 		    	//Highcharts
+ 	 		    	
+ 	 		    	//解析data
+ 	 		    	var d=[];
+ 	 		    	var l=[];
+ 	 		    	var lw=[];
+ 	 		    	var s=[];
+ 	 		    	var sw=[];
+ 	 		    	var b=[];
+ 	 		    	var bw=[];
+ 	 		    	var countIndex=0;
+ 	 		    	$.each(data.data.root.records, function (index, value) {
+ 	 		    		
+ 	 		    		if(value.leadGeneralIndicator!=null)
+ 	 		    		{
+ 	 	 		    		d.push(countIndex);
+ 	 	 		    		countIndex++;
+ 	 	 		    		l.push(parseFloat(value.leadGeneralIndicator));
+ 	 	 		    		lw.push(parseFloat(value.leadGeneralIndicatorWithoutTrend));
+ 	 	 		    		s.push(parseFloat(value.sameGeneralIndicator));
+ 	 	 		    		sw.push(parseFloat(value.sameGeneralIndicatorWithoutTrend));
+ 	 	 		    	 	b.push(parseFloat(value.behindGeneralIndicator));
+ 	 	 		    	 	bw.push(parseFloat(value.behindGeneralIndicatorWithoutTrend));	
+ 	 		    		}
+ 		 		    	//appendStr=appendStr+"<tr><td>"+value.date+"</td><td>"+value.leadGeneralIndicator+"</td><td>"+value.leadGeneralIndicatorWithoutTrend+"</td><td>"+value.sameGeneralIndicator+"</td><td>"+value.sameGeneralIndicatorWithoutTrend+"</td><td>"+value.behindGeneralIndicator+"</td><td>"+value.behindGeneralIndicatorWithoutTrend+"</td></tr>"
+ 		 		    });
+ 	 		    
+ 	 		    	
+ 	 		    	
+ 	 		    	$(appendTarget).find('.modal-body').append("<div id='chartViewContainer' style='height: 400px; width:auto;'></div>");
+ 	 				$('#chartViewContainer').highcharts({
+ 	 		            title: {
+ 	 		                text: '',
+ 	 		                x: -20 //center
+ 	 		            },
+	 	 		          chart: {
+	 	 	                zoomType: 'x',
+	 	 	                spacingRight: 20
+	 	 	            },
+ 	 		            subtitle: {
+ 	 		                text: '',
+ 	 		                x: -20
+ 	 		            },
+ 	 		            xAxis: {
+ 	 		            	maxZoom: 14 //, // fourteen days
+ 	 		                //categories: d
+ 	 		            },
+ 	 		            yAxis: {
+ 	 		                title: {
+ 	 		                    text: ''
+ 	 		                },
+ 	 		                plotLines: [{
+ 	 		                    value: 0,
+ 	 		                    width: 1,
+ 	 		                    color: '#808080'
+ 	 		                }]
+ 	 		            },
+ 	 		            tooltip: {
+ 	 		                valueSuffix: ''
+ 	 		            },
+ 	 		            legend: {
+ 	 		                layout: 'vertical',
+ 	 		                align: 'right',
+ 	 		                verticalAlign: 'middle',
+ 	 		                borderWidth: 0
+ 	 		            },
+ 	 		            series: [{
+ 	 		                name: '領先指標綜合指數',
+ 	 		                data: l
+ 	 		            }, {
+ 	 		                name: '領先指標不含趨勢指數',
+ 	 		                data: lw
+ 	 		            }, {
+ 	 		                name: '同時指標綜合指數',
+ 	 		                data: s
+ 	 		            }, {
+ 	 		                name: '同時指標不含趨勢指數',
+ 	 		                data: sw
+ 	 		            }, {
+ 	 		                name: '落後指標綜合指數',
+ 	 		                data: b
+ 	 		            }, {
+ 	 		                name: '落後指標不含趨勢指數',
+ 	 		                data: bw
+ 	 		            }]
+ 	 		        });
+ 	 		    	
+ 	 			 });
+ 			 }
+ 			 
+
+ 		});
+ 		
+		$(document).on("click", "#btnSearch", function() {
+			//alert("搜尋");
+			var searchURL=serverURL+"metaDS?";
+			var searchParam="";
+			if($("#data_description").val()!="")
+			{
+				searchParam=searchParam+"&key="+encodeURI($("#data_description").val());
+			}
+			if($("#category").val()!="-1")
+			{
+				searchParam=searchParam+"&category="+$("#category").val();
+			}
+			searchURL=searchURL+searchParam;
+			//alert(searchURL);
+			$.getJSON(searchURL, function(data){
+				$("#freewall").empty();
+	 		    $.each(data, function (index, value) {
+	 		    	//參數
+	 		    	var _id=value._id;
+	 		    	var name=value.name;
+	 		    	var frequency=value.frequency;
+	 		    	var department=value.department;
+	 		    	var wallImg="";
+	 		    	var action=value.action;//ex: business_indicator.xml
+	 		    	var getDataURL=serverURL+"hyAppDS?_action="+action;
+	 		    	setTimeout("$(window).resize();", 100);
+	 		    	
+	 		    	//準備freewall內容
+	 		    	//$('body').append("<div class='modal fade' id='"+_id+"' tabindex='0' role='dialog' aria-labelledby='loginBlockLabel' aria-hidden='true'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel'>"+name+"</h4></div><div class='modal-body'><table id='example2' class='display' cellspacing='0' width='100%'><thead><tr><th>th1</th><th>th2</th><th>th3</th></thead><tbody><tr><td>td1</td><td>td2</td><td>td3</td></tr><tr><td>td4</td><td>td5</td><td>td6</td></tr><tr><td>td7</td><td>td8</td><td>td9</td></tr></tbody></table></div></div></div></div>")
+	 		    	//$('body').append("<div class='modal fade' id='"+_id+"' tabindex='0' role='dialog' aria-labelledby='loginBlockLabel' aria-hidden='true'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel'>"+name+"</h4></div><div class='modal-body'><table width='100%' cellspacing='0' class='display' id='aaa'><thead><tr><th>date</th><th>領先指標綜合指數</th><th>領先指標不含趨勢指數</th><th>同時指標綜合指數</th><th>同時指標不含趨勢指數</th><th>落後指標綜合指數</th><th>落後指標不含趨勢指數</th></tr></thead><tbody><tr><td>1982-01-01T00:00:00.000</td><td>20.82</td><td>102.65</td><td>21.52</td><td>106.11</td><td>20.63</td><td>101.74</td></tr><tr><td>1982-02-01T00:00:00.000</td><td>20.82</td><td>101.83</td><td>21.22</td><td>103.8</td><td>21.11</td><td>103.26</td></tr><tr><td>1982-03-01T00:00:00.000</td><td>20.82</td><td>100.99</td><td>20.98</td><td>101.74</td><td>21.54</td><td>104.48</td></tr><tr><td>1982-04-01T00:00:00.000</td><td>20.78</td><td>99.97</td><td>20.77</td><td>99.91</td><td>21.86</td><td>105.17</td></tr><tr><td>1982-05-01T00:00:00.000</td><td>20.74</td><td>98.96</td><td>20.61</td><td>98.31</td><td>22.06</td><td>105.24</td></tr><tr><td>1982-06-01T00:00:00.000</td><td>20.73</td><td>98.1</td><td>20.5</td><td>96.97</td><td>22.12</td><td>104.65</td></tr><tr><td>1982-07-01T00:00:00.000</td><td>20.75</td><td>97.38</td><td>20.47</td><td>96.03</td><td>22.04</td><td>103.4</td></tr><tr><td>1982-08-01T00:00:00.000</td><td>20.83</td><td>96.94</td><td>20.53</td><td>95.54</td><td>21.87</td><td>101.75</td></tr><tr><td>1982-09-01T00:00:00.000</td><td>20.98</td><td>96.79</td><td>20.69</td><td>95.46</td><td>21.64</td><td>99.84</td></tr><tr><td>1982-10-01T00:00:00.000</td><td>21.19</td><td>96.96</td><td>20.89</td><td>95.58</td><td>21.42</td><td>97.99</td></tr><tr><td>1982-11-01T00:00:00.000</td><td>21.5</td><td>97.55</td><td>21.13</td><td>95.86</td><td>21.23</td><td>96.32</td></tr><tr><td>1982-12-01T00:00:00.000</td><td>21.9</td><td>98.53</td><td>21.4</td><td>96.27</td><td>21.09</td><td>94.89</td></tr><tr><td>1983-01-01T00:00:00.000</td><td>22.38</td><td>99.84</td><td>21.66</td><td>96.63</td><td>21.01</td><td>93.72</td></tr><tr><td>1983-02-01T00:00:00.000</td><td>22.9</td><td>101.3</td><td>21.94</td><td>97.03</td><td>21</td><td>92.9</td></tr><tr><td>1983-03-01T00:00:00.000</td><td>23.44</td><td>102.81</td><td>22.21</td><td>97.42</td><td>21.1</td><td>92.52</td></tr><tr><td>1983-04-01T00:00:00.000</td><td>24</td><td>104.39</td><td>22.56</td><td>98.1</td><td>21.3</td><td>92.65</td></tr><tr><td>1983-05-01T00:00:00.000</td><td>24.51</td><td>105.72</td><td>22.96</td><td>99.02</td><td>21.63</td><td>93.26</td></tr><tr><td>1983-06-01T00:00:00.000</td><td>24.9</td><td>106.48</td><td>23.4</td><td>100.06</td><td>22.03</td><td>94.2</td></tr><tr><td>1983-07-01T00:00:00.000</td><td>25.14</td><td>106.61</td><td>23.83</td><td>101.05</td><td>22.45</td><td>95.2</td></tr><tr><td>1983-08-01T00:00:00.000</td><td>25.23</td><td>106.1</td><td>24.24</td><td>101.96</td><td>22.82</td><td>96</td></tr><tr><td>1983-09-01T00:00:00.000</td><td>25.41</td><td>106.01</td><td>24.63</td><td>102.75</td><td>23.17</td><td>96.64</td></tr><tr><td>1983-10-01T00:00:00.000</td><td>25.68</td><td>106.25</td><td>24.99</td><td>103.41</td><td>23.51</td><td>97.28</td></tr><tr><td>1983-11-01T00:00:00.000</td><td>25.93</td><td>106.46</td><td>25.32</td><td>103.96</td><td>23.87</td><td>97.99</td></tr><tr><td>1983-12-01T00:00:00.000</td><td>26.14</td><td>106.49</td><td>25.62</td><td>104.34</td><td>24.25</td><td>98.77</td></tr><tr><td>1984-01-01T00:00:00.000</td><td>26.34</td><td>106.49</td><td>25.9</td><td>104.67</td><td>24.64</td><td>99.58</td></tr><tr><td>1984-02-01T00:00:00.000</td><td>26.55</td><td>106.52</td><td>26.14</td><td>104.87</td><td>25.04</td><td>100.46</td></tr><tr><td>1984-03-01T00:00:00.000</td><td>26.75</td><td>106.53</td><td>26.35</td><td>104.94</td><td>25.44</td><td>101.32</td></tr><tr><td>1984-04-01T00:00:00.000</td><td>26.9</td><td>106.33</td><td>26.51</td><td>104.82</td><td>25.83</td><td>102.11</td></tr><tr><td>1984-05-01T00:00:00.000</td><td>26.94</td><td>105.74</td><td>26.64</td><td>104.55</td><td>26.21</td><td>102.88</td></tr><tr><td>1984-06-01T00:00:00.000</td><td>26.87</td><td>104.73</td><td>26.73</td><td>104.18</td><td>26.62</td><td>103.74</td></tr><tr><td>1984-07-01T00:00:00.000</td><td>26.74</td><td>103.49</td><td>26.78</td><td>103.66</td><td>27.05</td><td>104.69</td></tr><tr><td>1984-08-01T00:00:00.000</td><td>26.58</td><td>102.16</td><td>26.79</td><td>102.97</td><td>27.48</td><td>105.65</td></tr><tr><td>1984-09-01T00:00:00.000</td><td>26.43</td><td>100.92</td><td>26.76</td><td>102.16</td><td>27.91</td><td>106.58</td></tr><tr><td>1984-10-01T00:00:00.000</td><td>26.33</td><td>99.86</td><td>26.71</td><td>101.3</td><td>28.32</td><td>107.4</td></tr><tr><td>1984-11-01T00:00:00.000</td><td>26.27</td><td>98.98</td><td>26.66</td><td>100.44</td><td>28.69</td><td>108.09</td></tr><tr><td>1984-12-01T00:00:00.000</td><td>26.24</td><td>98.21</td><td>26.63</td><td>99.66</td><td>29</td><td>108.53</td></tr><tr><td>1985-01-01T00:00:00.000</td><td>26.19</td><td>97.39</td><td>26.6</td><td>98.92</td><td>29.21</td><td>108.61</td></tr><tr><td>1985-02-01T00:00:00.000</td><td>26.05</td><td>96.22</td><td>26.54</td><td>98.03</td><td>29.33</td><td>108.31</td></tr><tr><td>1985-03-01T00:00:00.000</td><td>25.82</td><td>94.72</td><td>26.37</td><td>96.73</td><td>29.37</td><td>107.74</td></tr><tr><td>1985-04-01T00:00:00.000</td><td>25.54</td><td>93.08</td><td>26.14</td><td>95.27</td><td>29.37</td><td>107.02</td></tr><tr><td>1985-05-01T00:00:00.000</td><td>25.29</td><td>91.54</td><td>25.92</td><td>93.8</td><td>29.36</td><td>106.25</td></tr><tr><td>1985-06-01T00:00:00.000</td><td>25.12</td><td>90.3</td><td>25.71</td><td>92.42</td><td>29.32</td><td>105.38</td></tr><tr><td>1985-07-01T00:00:00.000</td><td>25.1</td><td>89.57</td><td>25.56</td><td>91.2</td><td>29.25</td><td>104.39</td></tr><tr><td>1985-08-01T00:00:00.000</td><td>25.28</td><td>89.55</td><td>25.52</td><td>90.43</td><td>29.17</td><td>103.36</td></tr><tr><td>1985-09-01T00:00:00.000</td><td>25.64</td><td>90.18</td><td>25.66</td><td>90.23</td><td>29.08</td><td>102.26</td></tr><tr><td>1985-10-01T00:00:00.000</td><td>26.18</td><td>91.38</td><td>25.94</td><td>90.54</td><td>29</td><td>101.21</td></tr><tr><td>1985-11-01T00:00:00.000</td><td>26.84</td><td>92.96</td><td>26.38</td><td>91.38</td><td>28.96</td><td>100.32</td></tr><tr><td>1985-12-01T00:00:00.000</td><td>27.55</td><td>94.69</td><td>26.94</td><td>92.62</td><td>28.97</td><td>99.57</td></tr><tr><td>1986-01-01T00:00:00.000</td><td>28.24</td><td>96.3</td><td>27.56</td><td>94</td><td>29.01</td><td>98.92</td></tr><tr><td>1986-02-01T00:00:00.000</td><td>28.83</td><td>97.53</td><td>28.16</td><td>95.28</td><td>29.04</td><td>98.26</td></tr><tr><td>1986-03-01T00:00:00.000</td><td>29.3</td><td>98.32</td><td>28.71</td><td>96.34</td><td>29.08</td><td>97.58</td></tr><tr><td>1986-04-01T00:00:00.000</td><td>29.64</td><td>98.68</td><td>29.19</td><td>97.19</td><td>29.15</td><td>97.04</td></tr><tr><td>1986-05-01T00:00:00.000</td><td>29.92</td><td>98.81</td><td>29.69</td><td>98.04</td><td>29.21</td><td>96.47</td></tr><tr><td>1986-06-01T00:00:00.000</td><td>30.18</td><td>98.84</td><td>30.21</td><td>98.95</td><td>29.26</td><td>95.85</td></tr><tr><td>1986-07-01T00:00:00.000</td><td>30.43</td><td>98.87</td><td>30.72</td><td>99.79</td><td>29.3</td><td>95.2</td></tr><tr><td>1986-08-01T00:00:00.000</td><td>30.75</td><td>99.08</td><td>31.16</td><td>100.42</td><td>29.36</td><td>94.6</td></tr><tr><td>1986-09-01T00:00:00.000</td><td>31.13</td><td>99.5</td><td>31.64</td><td>101.13</td><td>29.44</td><td>94.11</td></tr><tr><td>1986-10-01T00:00:00.000</td><td>31.57</td><td>100.11</td><td>32.159999999999997</td><td>101.99</td><td>29.56</td><td>93.74</td></tr><tr><td>1986-11-01T00:00:00.000</td><td>32.03</td><td>100.8</td><td>32.67</td><td>102.81</td><td>29.71</td><td>93.47</td></tr><tr><td>1986-12-01T00:00:00.000</td><td>32.47</td><td>101.38</td><td>33.14</td><td>103.49</td><td>29.86</td><td>93.24</td></tr><tr><td>1987-01-01T00:00:00.000</td><td>32.880000000000003</td><td>101.89</td><td>33.56</td><td>104.02</td><td>30</td><td>92.96</td></tr><tr><td>1987-02-01T00:00:00.000</td><td>33.26</td><td>102.31</td><td>33.93</td><td>104.39</td><td>30.13</td><td>92.7</td></tr><tr><td>1987-03-01T00:00:00.000</td><td>33.619999999999997</td><td>102.7</td><td>34.22</td><td>104.53</td><td>30.31</td><td>92.58</td></tr><tr><td>1987-04-01T00:00:00.000</td><td>33.99</td><td>103.1</td><td>34.43</td><td>104.43</td><td>30.55</td><td>92.68</td></tr><tr><td>1987-05-01T00:00:00.000</td><td>34.32</td><td>103.42</td><td>34.590000000000003</td><td>104.23</td><td>30.86</td><td>92.98</td></tr><tr><td>1987-06-01T00:00:00.000</td><td>34.61</td><td>103.61</td><td>34.75</td><td>104.02</td><td>31.22</td><td>93.47</td></tr><tr><td>1987-07-01T00:00:00.000</td><td>34.82</td><td>103.58</td><td>34.89</td><td>103.8</td><td>31.61</td><td>94.05</td></tr><tr><td>1987-08-01T00:00:00.000</td><td>34.92</td><td>103.25</td><td>35.03</td><td>103.59</td><td>31.96</td><td>94.52</td></tr><tr><td>1987-09-01T00:00:00.000</td><td>34.950000000000003</td><td>102.76</td><td>35.11</td><td>103.23</td><td>32.29</td><td>94.93</td></tr><tr><td>1987-10-01T00:00:00.000</td><td>34.92</td><td>102.1</td><td>35.130000000000003</td><td>102.72</td><td>32.61</td><td>95.35</td></tr><tr><td>1987-11-01T00:00:00.000</td><td>34.880000000000003</td><td>101.43</td><td>35.14</td><td>102.2</td><td>32.96</td><td>95.87</td></tr><tr><td>1987-12-01T00:00:00.000</td><td>34.909999999999997</td><td>101.02</td><td>35.130000000000003</td><td>101.65</td><td>33.36</td><td>96.55</td></tr><tr><td>1988-01-01T00:00:00.000</td><td>35.06</td><td>100.96</td><td>35.11</td><td>101.11</td><td>33.81</td><td>97.37</td></tr><tr><td>1988-02-01T00:00:00.000</td><td>35.33</td><td>101.27</td><td>35.08</td><td>100.56</td><td>34.29</td><td>98.29</td></tr><tr><td>1988-03-01T00:00:00.000</td><td>35.71</td><td>101.9</td><td>35.049999999999997</td><td>100.01</td><td>34.76</td><td>99.19</td></tr><tr><td>1988-04-01T00:00:00.000</td><td>36.159999999999997</td><td>102.76</td><td>35.07</td><td>99.64</td><td>35.17</td><td>99.95</td></tr><tr><td>1988-05-01T00:00:00.000</td><td>36.630000000000003</td><td>103.67</td><td>35.159999999999997</td><td>99.51</td><td>35.54</td><td>100.59</td></tr><tr><td>1988-06-01T00:00:00.000</td><td>37.06</td><td>104.47</td><td>35.31</td><td>99.56</td><td>35.880000000000003</td><td>101.15</td></tr><tr><td>1988-07-01T00:00:00.000</td><td>37.409999999999997</td><td>105.06</td><td>35.520000000000003</td><td>99.76</td><td>36.15</td><td>101.53</td></tr><tr><td>1988-08-01T00:00:00.000</td><td>37.58</td><td>105.18</td><td>35.76</td><td>100.07</td><td>36.32</td><td>101.66</td></tr><tr><td>1988-09-01T00:00:00.000</td><td>37.65</td><td>105</td><td>36.03</td><td>100.51</td><td>36.409999999999997</td><td>101.56</td></tr><tr><td>1988-10-01T00:00:00.000</td><td>37.67</td><td>104.72</td><td>36.36</td><td>101.08</td><td>36.44</td><td>101.3</td></tr><tr><td>1988-11-01T00:00:00.000</td><td>37.68</td><td>104.43</td><td>36.69</td><td>101.69</td><td>36.46</td><td>101.06</td></tr><tr><td>1988-12-01T00:00:00.000</td><td>37.68</td><td>104.13</td><td>36.99</td><td>102.22</td><td>36.58</td><td>101.07</td></tr><tr><td>1989-01-01T00:00:00.000</td><td>37.700000000000003</td><td>103.87</td><td>37.229999999999997</td><td>102.6</td><td>36.81</td><td>101.43</td></tr><tr><td>1989-02-01T00:00:00.000</td><td>37.729999999999997</td><td>103.69</td><td>37.450000000000003</td><td>102.92</td><td>37.15</td><td>102.09</td></tr><tr><td>1989-03-01T00:00:00.000</td><td>37.770000000000003</td><td>103.52</td><td>37.64</td><td>103.17</td><td>37.61</td><td>103.1</td></tr><tr><td>1989-04-01T00:00:00.000</td><td>37.78</td><td>103.31</td><td>37.729999999999997</td><td>103.15</td><td>38.159999999999997</td><td>104.35</td></tr><tr><td>1989-05-01T00:00:00.000</td><td>37.79</td><td>103.07</td><td>37.68</td><td>102.79</td><td>38.6</td><td>105.3</td></tr><tr><td>1989-06-01T00:00:00.000</td><td>37.79</td><td>102.86</td><td>37.520000000000003</td><td>102.11</td><td>38.869999999999997</td><td>105.78</td></tr><tr><td>1989-07-01T00:00:00.000</td><td>37.770000000000003</td><td>102.58</td><td>37.299999999999997</td><td>101.29</td><td>39.020000000000003</td><td>105.98</td></tr><tr><td>1989-08-01T00:00:00.000</td><td>37.65</td><td>102.03</td><td>37.020000000000003</td><td>100.33</td><td>39.119999999999997</td><td>106.02</td></tr><tr><td>1989-09-01T00:00:00.000</td><td>37.5</td><td>101.41</td><td>36.72</td><td>99.29</td><td>39.19</td><td>105.98</td></tr><tr><td>1989-10-01T00:00:00.000</td><td>37.380000000000003</td><td>100.89</td><td>36.42</td><td>98.28</td><td>39.299999999999997</td><td>106.07</td></tr><tr><td>1989-11-01T00:00:00.000</td><td>37.340000000000003</td><td>100.57</td><td>36.21</td><td>97.51</td><td>39.51</td><td>106.41</td></tr><tr><td>1989-12-01T00:00:00.000</td><td>37.369999999999997</td><td>100.42</td><td>36.07</td><td>96.95</td><td>39.89</td><td>107.2</td></tr><tr><td>1990-01-01T00:00:00.000</td><td>37.42</td><td>100.36</td><td>36.01</td><td>96.58</td><td>40.35</td><td>108.22</td></tr><tr><td>1990-02-01T00:00:00.000</td><td>37.44</td><td>100.19</td><td>36.03</td><td>96.42</td><td>40.67</td><td>108.85</td></tr><tr><td>1990-03-01T00:00:00.000</td><td>37.340000000000003</td><td>99.7</td><td>36.090000000000003</td><td>96.37</td><td>40.74</td><td>108.79</td></tr><tr><td>1990-04-01T00:00:00.000</td><td>37.090000000000003</td><td>98.83</td><td>36.15</td><td>96.3</td><td>40.53</td><td>107.98</td></tr><tr><td>1990-05-01T00:00:00.000</td><td>36.74</td><td>97.65</td><td>36.21</td><td>96.25</td><td>40.1</td><td>106.59</td></tr><tr><td>1990-06-01T00:00:00.000</td><td>36.299999999999997</td><td>96.23</td><td>36.32</td><td>96.31</td><td>39.54</td><td>104.84</td></tr><tr><td>1990-07-01T00:00:00.000</td><td>35.82</td><td>94.72</td><td>36.47</td><td>96.44</td><td>38.86</td><td>102.76</td></tr><tr><td>1990-08-01T00:00:00.000</td><td>35.4</td><td>93.38</td><td>36.630000000000003</td><td>96.61</td><td>38.07</td><td>100.4</td></tr><tr><td>1990-09-01T00:00:00.000</td><td>35.130000000000003</td><td>92.4</td><td>36.799999999999997</td><td>96.79</td><td>37.28</td><td>98.05</td></tr><tr><td>1990-10-01T00:00:00.000</td><td>35.06</td><td>91.95</td><td>36.92</td><td>96.83</td><td>36.65</td><td>96.13</td></tr><tr><td>1990-11-01T00:00:00.000</td><td>35.21</td><td>92.05</td><td>37</td><td>96.75</td><td>36.29</td><td>94.89</td></tr><tr><td>1990-12-01T00:00:00.000</td><td>35.51</td><td>92.55</td><td>37.06</td><td>96.6</td><td>36.200000000000003</td><td>94.37</td></tr><tr><td>1991-01-01T00:00:00.000</td><td>35.950000000000003</td><td>93.42</td><td>37.15</td><td>96.52</td><td>36.340000000000003</td><td>94.43</td></tr><tr><td>1991-02-01T00:00:00.000</td><td>36.53</td><td>94.58</td><td>37.31</td><td>96.62</td><td>36.61</td><td>94.81</td></tr><tr><td>1991-03-01T00:00:00.000</td><td>37.19</td><td>95.97</td><td>37.630000000000003</td><td>97.11</td><td>36.89</td><td>95.19</td></tr><tr><td>1991-04-01T00:00:00.000</td><td>37.9</td><td>97.44</td><td>38.090000000000003</td><td>97.95</td><td>37.090000000000003</td><td>95.38</td></tr><tr><td>1991-05-01T00:00:00.000</td><td>38.58</td><td>98.83</td><td>38.659999999999997</td><td>99.05</td><td>37.200000000000003</td><td>95.31</td></tr><tr><td>1991-06-01T00:00:00.000</td><td>39.19</td><td>100.02</td><td>39.26</td><td>100.2</td><td>37.21</td><td>94.99</td></tr><tr><td>1991-07-01T00:00:00.000</td><td>39.71</td><td>100.97</td><td>39.75</td><td>101.08</td><td>37.15</td><td>94.45</td></tr><tr><td>1991-08-01T00:00:00.000</td><td>40.130000000000003</td><td>101.64</td><td>40.15</td><td>101.7</td><td>37.07</td><td>93.9</td></tr><tr><td>1991-09-01T00:00:00.000</td><td>40.46</td><td>102.09</td><td>40.46</td><td>102.1</td><td>37.06</td><td>93.51</td></tr><tr><td>1991-10-01T00:00:00.000</td><td>40.71</td><td>102.33</td><td>40.64</td><td>102.14</td><td>37.24</td><td>93.59</td></tr><tr><td>1991-11-01T00:00:00.000</td><td>40.909999999999997</td><td>102.43</td><td>40.72</td><td>101.95</td><td>37.68</td><td>94.33</td></tr><tr><td>1991-12-01T00:00:00.000</td><td>41.07</td><td>102.41</td><td>40.75</td><td>101.61</td><td>38.33</td><td>95.59</td></tr><tr><td>1992-01-01T00:00:00.000</td><td>41.2</td><td>102.33</td><td>40.75</td><td>101.21</td><td>39.090000000000003</td><td>97.09</td></tr><tr><td>1992-02-01T00:00:00.000</td><td>41.32</td><td>102.23</td><td>40.78</td><td>100.88</td><td>39.74</td><td>98.31</td></tr><tr><td>1992-03-01T00:00:00.000</td><td>41.47</td><td>102.17</td><td>40.869999999999997</td><td>100.7</td><td>40.270000000000003</td><td>99.23</td></tr><tr><td>1992-04-01T00:00:00.000</td><td>41.61</td><td>102.11</td><td>41.02</td><td>100.67</td><td>40.74</td><td>99.99</td></tr><tr><td>1992-05-01T00:00:00.000</td><td>41.7</td><td>101.93</td><td>41.11</td><td>100.49</td><td>41.17</td><td>100.63</td></tr><tr><td>1992-06-01T00:00:00.000</td><td>41.72</td><td>101.56</td><td>41.17</td><td>100.22</td><td>41.53</td><td>101.09</td></tr><tr><td>1992-07-01T00:00:00.000</td><td>41.66</td><td>101.02</td><td>41.2</td><td>99.89</td><td>41.81</td><td>101.37</td></tr><tr><td>1992-08-01T00:00:00.000</td><td>41.57</td><td>100.39</td><td>41.22</td><td>99.53</td><td>42.03</td><td>101.5</td></tr><tr><td>1992-09-01T00:00:00.000</td><td>41.52</td><td>99.85</td><td>41.2</td><td>99.09</td><td>42.22</td><td>101.55</td></tr><tr><td>1992-10-01T00:00:00.000</td><td>41.55</td><td>99.52</td><td>41.21</td><td>98.72</td><td>42.43</td><td>101.63</td></tr><tr><td>1992-11-01T00:00:00.000</td><td>41.64</td><td>99.32</td><td>41.26</td><td>98.43</td><td>42.68</td><td>101.8</td></tr><tr><td>1992-12-01T00:00:00.000</td><td>41.75</td><td>99.18</td><td>41.36</td><td>98.27</td><td>42.95</td><td>102.04</td></tr><tr><td>1993-01-01T00:00:00.000</td><td>41.91</td><td>99.15</td><td>41.53</td><td>98.25</td><td>43.18</td><td>102.15</td></tr><tr><td>1993-02-01T00:00:00.000</td><td>42.12</td><td>99.24</td><td>41.73</td><td>98.31</td><td>43.28</td><td>101.96</td></tr><tr><td>1993-03-01T00:00:00.000</td><td>42.35</td><td>99.35</td><td>41.94</td><td>98.39</td><td>43.3</td><td>101.59</td></tr><tr><td>1993-04-01T00:00:00.000</td><td>42.56</td><td>99.42</td><td>42.13</td><td>98.42</td><td>43.28</td><td>101.1</td></tr><tr><td>1993-05-01T00:00:00.000</td><td>42.71</td><td>99.36</td><td>42.35</td><td>98.51</td><td>43.22</td><td>100.55</td></tr><tr><td>1993-06-01T00:00:00.000</td><td>42.83</td><td>99.21</td><td>42.57</td><td>98.61</td><td>43.19</td><td>100.04</td></tr><tr><td>1993-07-01T00:00:00.000</td><td>42.95</td><td>99.07</td><td>42.81</td><td>98.74</td><td>43.21</td><td>99.68</td></tr><tr><td>1993-08-01T00:00:00.000</td><td>43.13</td><td>99.05</td><td>43.01</td><td>98.78</td><td>43.36</td><td>99.59</td></tr><tr><td>1993-09-01T00:00:00.000</td><td>43.36</td><td>99.15</td><td>43.14</td><td>98.64</td><td>43.63</td><td>99.78</td></tr><tr><td>1993-10-01T00:00:00.000</td><td>43.67</td><td>99.43</td><td>43.23</td><td>98.42</td><td>43.99</td><td>100.17</td></tr><tr><td>1993-11-01T00:00:00.000</td><td>44.06</td><td>99.87</td><td>43.34</td><td>98.25</td><td>44.4</td><td>100.64</td></tr><tr><td>1993-12-01T00:00:00.000</td><td>44.49</td><td>100.42</td><td>43.55</td><td>98.3</td><td>44.79</td><td>101.09</td></tr><tr><td>1994-01-01T00:00:00.000</td><td>44.9</td><td>100.91</td><td>43.85</td><td>98.55</td><td>45.12</td><td>101.4</td></tr><tr><td>1994-02-01T00:00:00.000</td><td>45.25</td><td>101.25</td><td>44.2</td><td>98.91</td><td>45.33</td><td>101.42</td></tr><tr><td>1994-03-01T00:00:00.000</td><td>45.56</td><td>101.5</td><td>44.6</td><td>99.37</td><td>45.4</td><td>101.15</td></tr><tr><td>1994-04-01T00:00:00.000</td><td>45.88</td><td>101.78</td><td>45</td><td>99.83</td><td>45.48</td><td>100.89</td></tr><tr><td>1994-05-01T00:00:00.000</td><td>46.27</td><td>102.19</td><td>45.36</td><td>100.19</td><td>45.65</td><td>100.83</td></tr><tr><td>1994-06-01T00:00:00.000</td><td>46.73</td><td>102.77</td><td>45.64</td><td>100.38</td><td>45.94</td><td>101.05</td></tr><tr><td>1994-07-01T00:00:00.000</td><td>47.24</td><td>103.45</td><td>45.91</td><td>100.55</td><td>46.33</td><td>101.47</td></tr><tr><td>1994-08-01T00:00:00.000</td><td>47.75</td><td>104.15</td><td>46.25</td><td>100.86</td><td>46.7</td><td>101.84</td></tr><tr><td>1994-09-01T00:00:00.000</td><td>48.24</td><td>104.78</td><td>46.67</td><td>101.38</td><td>46.91</td><td>101.9</td></tr><tr><td>1994-10-01T00:00:00.000</td><td>48.63</td><td>105.2</td><td>47.17</td><td>102.04</td><td>46.98</td><td>101.64</td></tr><tr><td>1994-11-01T00:00:00.000</td><td>48.85</td><td>105.26</td><td>47.65</td><td>102.69</td><td>46.97</td><td>101.21</td></tr><tr><td>1994-12-01T00:00:00.000</td><td>48.9</td><td>104.97</td><td>48.07</td><td>103.19</td><td>46.97</td><td>100.82</td></tr><tr><td>1995-01-01T00:00:00.000</td><td>48.8</td><td>104.36</td><td>48.42</td><td>103.55</td><td>47.03</td><td>100.57</td></tr><tr><td>1995-02-01T00:00:00.000</td><td>48.6</td><td>103.54</td><td>48.72</td><td>103.8</td><td>47.18</td><td>100.51</td></tr><tr><td>1995-03-01T00:00:00.000</td><td>48.33</td><td>102.61</td><td>48.82</td><td>103.65</td><td>47.44</td><td>100.71</td></tr><tr><td>1995-04-01T00:00:00.000</td><td>48.02</td><td>101.59</td><td>48.84</td><td>103.31</td><td>47.8</td><td>101.12</td></tr><tr><td>1995-05-01T00:00:00.000</td><td>47.71</td><td>100.57</td><td>48.76</td><td>102.78</td><td>48.24</td><td>101.7</td></tr><tr><td>1995-06-01T00:00:00.000</td><td>47.41</td><td>99.61</td><td>48.59</td><td>102.09</td><td>48.74</td><td>102.4</td></tr><tr><td>1995-07-01T00:00:00.000</td><td>47.14</td><td>98.71</td><td>48.39</td><td>101.32</td><td>49.26</td><td>103.14</td></tr><tr><td>1995-08-01T00:00:00.000</td><td>46.9</td><td>97.88</td><td>48.15</td><td>100.49</td><td>49.73</td><td>103.78</td></tr><tr><td>1995-09-01T00:00:00.000</td><td>46.67</td><td>97.07</td><td>47.92</td><td>99.68</td><td>50.04</td><td>104.09</td></tr><tr><td>1995-10-01T00:00:00.000</td><td>46.47</td><td>96.34</td><td>47.72</td><td>98.95</td><td>50.16</td><td>104</td></tr><tr><td>1995-11-01T00:00:00.000</td><td>46.33</td><td>95.75</td><td>47.56</td><td>98.3</td><td>50.13</td><td>103.59</td></tr><tr><td>1995-12-01T00:00:00.000</td><td>46.25</td><td>95.28</td><td>47.46</td><td>97.76</td><td>49.99</td><td>102.98</td></tr><tr><td>1996-01-01T00:00:00.000</td><td>46.22</td><td>94.91</td><td>47.43</td><td>97.39</td><td>49.8</td><td>102.26</td></tr><tr><td>1996-02-01T00:00:00.000</td><td>46.26</td><td>94.67</td><td>47.41</td><td>97.04</td><td>49.57</td><td>101.45</td></tr><tr><td>1996-03-01T00:00:00.000</td><td>46.37</td><td>94.6</td><td>47.42</td><td>96.74</td><td>49.27</td><td>100.51</td></tr><tr><td>1996-04-01T00:00:00.000</td><td>46.59</td><td>94.72</td><td>47.47</td><td>96.51</td><td>48.87</td><td>99.36</td></tr><tr><td>1996-05-01T00:00:00.000</td><td>46.88</td><td>95.01</td><td>47.57</td><td>96.41</td><td>48.4</td><td>98.08</td></tr><tr><td>1996-06-01T00:00:00.000</td><td>47.26</td><td>95.44</td><td>47.79</td><td>96.53</td><td>47.93</td><td>96.81</td></tr><tr><td>1996-07-01T00:00:00.000</td><td>47.68</td><td>95.96</td><td>48.07</td><td>96.75</td><td>47.53</td><td>95.67</td></tr><tr><td>1996-08-01T00:00:00.000</td><td>48.15</td><td>96.58</td><td>48.43</td><td>97.14</td><td>47.22</td><td>94.71</td></tr><tr><td>1996-09-01T00:00:00.000</td><td>48.7</td><td>97.34</td><td>48.9</td><td>97.73</td><td>47.01</td><td>93.96</td></tr><tr><td>1996-10-01T00:00:00.000</td><td>49.32</td><td>98.22</td><td>49.38</td><td>98.34</td><td>46.92</td><td>93.44</td></tr><tr><td>1996-11-01T00:00:00.000</td><td>50</td><td>99.22</td><td>49.85</td><td>98.93</td><td>46.99</td><td>93.25</td></tr><tr><td>1996-12-01T00:00:00.000</td><td>50.73</td><td>100.3</td><td>50.27</td><td>99.4</td><td>47.26</td><td>93.44</td></tr><tr><td>1997-01-01T00:00:00.000</td><td>51.49</td><td>101.43</td><td>50.58</td><td>99.64</td><td>47.71</td><td>93.99</td></tr><tr><td>1997-02-01T00:00:00.000</td><td>52.24</td><td>102.52</td><td>50.8</td><td>99.7</td><td>48.29</td><td>94.76</td></tr><tr><td>1997-03-01T00:00:00.000</td><td>52.9</td><td>103.42</td><td>50.97</td><td>99.65</td><td>48.93</td><td>95.65</td></tr><tr><td>1997-04-01T00:00:00.000</td><td>53.39</td><td>103.97</td><td>51.1</td><td>99.52</td><td>49.64</td><td>96.68</td></tr><tr><td>1997-05-01T00:00:00.000</td><td>53.71</td><td>104.2</td><td>51.23</td><td>99.38</td><td>50.39</td><td>97.75</td></tr><tr><td>1997-06-01T00:00:00.000</td><td>53.94</td><td>104.23</td><td>51.39</td><td>99.29</td><td>51.13</td><td>98.8</td></tr><tr><td>1997-07-01T00:00:00.000</td><td>54.09</td><td>104.11</td><td>51.62</td><td>99.34</td><td>51.81</td><td>99.72</td></tr><tr><td>1997-08-01T00:00:00.000</td><td>54.16</td><td>103.84</td><td>51.9</td><td>99.5</td><td>52.42</td><td>100.5</td></tr><tr><td>1997-09-01T00:00:00.000</td><td>54.14</td><td>103.37</td><td>52.28</td><td>99.82</td><td>52.95</td><td>101.1</td></tr><tr><td>1997-10-01T00:00:00.000</td><td>53.99</td><td>102.67</td><td>52.67</td><td>100.16</td><td>53.41</td><td>101.57</td></tr><tr><td>1997-11-01T00:00:00.000</td><td>53.74</td><td>101.78</td><td>53.01</td><td>100.39</td><td>53.81</td><td>101.91</td></tr><tr><td>1997-12-01T00:00:00.000</td><td>53.41</td><td>100.73</td><td>53.24</td><td>100.42</td><td>54.2</td><td>102.22</td></tr><tr><td>1998-01-01T00:00:00.000</td><td>52.99</td><td>99.54</td><td>53.36</td><td>100.23</td><td>54.59</td><td>102.54</td></tr><tr><td>1998-02-01T00:00:00.000</td><td>52.56</td><td>98.31</td><td>53.54</td><td>100.15</td><td>54.98</td><td>102.85</td></tr><tr><td>1998-03-01T00:00:00.000</td><td>52.09</td><td>97.03</td><td>53.6</td><td>99.84</td><td>55.39</td><td>103.17</td></tr><tr><td>1998-04-01T00:00:00.000</td><td>51.65</td><td>95.79</td><td>53.59</td><td>99.4</td><td>55.72</td><td>103.35</td></tr><tr><td>1998-05-01T00:00:00.000</td><td>51.25</td><td>94.66</td><td>53.59</td><td>98.97</td><td>55.92</td><td>103.28</td></tr><tr><td>1998-06-01T00:00:00.000</td><td>50.99</td><td>93.78</td><td>53.62</td><td>98.61</td><td>55.94</td><td>102.87</td></tr><tr><td>1998-07-01T00:00:00.000</td><td>50.94</td><td>93.28</td><td>53.71</td><td>98.36</td><td>55.85</td><td>102.27</td></tr><tr><td>1998-08-01T00:00:00.000</td><td>51.11</td><td>93.19</td><td>53.88</td><td>98.23</td><td>55.69</td><td>101.54</td></tr><tr><td>1998-09-01T00:00:00.000</td><td>51.5</td><td>93.49</td><td>54.01</td><td>98.05</td><td>55.53</td><td>100.81</td></tr><tr><td>1998-10-01T00:00:00.000</td><td>52.09</td><td>94.16</td><td>54.09</td><td>97.78</td><td>55.37</td><td>100.09</td></tr><tr><td>1998-11-01T00:00:00.000</td><td>52.91</td><td>95.22</td><td>54.24</td><td>97.61</td><td>55.22</td><td>99.39</td></tr><tr><td>1998-12-01T00:00:00.000</td><td>53.94</td><td>96.67</td><td>54.46</td><td>97.6</td><td>55.09</td><td>98.73</td></tr><tr><td>1999-01-01T00:00:00.000</td><td>55.13</td><td>98.37</td><td>54.82</td><td>97.82</td><td>55.02</td><td>98.18</td></tr><tr><td>1999-02-01T00:00:00.000</td><td>56.29</td><td>100.02</td><td>55.37</td><td>98.39</td><td>55.02</td><td>97.77</td></tr><tr><td>1999-03-01T00:00:00.000</td><td>57.34</td><td>101.47</td><td>55.97</td><td>99.03</td><td>55.11</td><td>97.51</td></tr><tr><td>1999-04-01T00:00:00.000</td><td>58.23</td><td>102.61</td><td>56.51</td><td>99.58</td><td>55.3</td><td>97.45</td></tr><tr><td>1999-05-01T00:00:00.000</td><td>58.94</td><td>103.45</td><td>56.96</td><td>99.98</td><td>55.63</td><td>97.64</td></tr><tr><td>1999-06-01T00:00:00.000</td><td>59.45</td><td>103.94</td><td>57.29</td><td>100.17</td><td>56.08</td><td>98.04</td></tr><tr><td>1999-07-01T00:00:00.000</td><td>59.81</td><td>104.17</td><td>57.53</td><td>100.19</td><td>56.57</td><td>98.52</td></tr><tr><td>1999-08-01T00:00:00.000</td><td>60.11</td><td>104.31</td><td>57.73</td><td>100.19</td><td>57.05</td><td>99</td></tr><tr><td>1999-09-01T00:00:00.000</td><td>60.45</td><td>104.53</td><td>58.02</td><td>100.33</td><td>57.46</td><td>99.36</td></tr><tr><td>1999-10-01T00:00:00.000</td><td>60.94</td><td>105.02</td><td>58.57</td><td>100.93</td><td>57.76</td><td>99.55</td></tr><tr><td>1999-11-01T00:00:00.000</td><td>61.53</td><td>105.7</td><td>59.27</td><td>101.83</td><td>58.07</td><td>99.76</td></tr><tr><td>1999-12-01T00:00:00.000</td><td>62.19</td><td>106.51</td><td>60.08</td><td>102.9</td><td>58.4</td><td>100.03</td></tr><tr><td>2000-01-01T00:00:00.000</td><td>62.87</td><td>107.39</td><td>60.96</td><td>104.11</td><td>58.8</td><td>100.43</td></tr><tr><td>2000-02-01T00:00:00.000</td><td>63.46</td><td>108.11</td><td>61.84</td><td>105.35</td><td>59.24</td><td>100.93</td></tr><tr><td>2000-03-01T00:00:00.000</td><td>63.84</td><td>108.5</td><td>62.7</td><td>106.55</td><td>59.76</td><td>101.56</td></tr><tr><td>2000-04-01T00:00:00.000</td><td>63.94</td><td>108.44</td><td>63.52</td><td>107.72</td><td>60.28</td><td>102.23</td></tr><tr><td>2000-05-01T00:00:00.000</td><td>63.78</td><td>107.95</td><td>64.209999999999994</td><td>108.69</td><td>60.78</td><td>102.88</td></tr><tr><td>2000-06-01T00:00:00.000</td><td>63.39</td><td>107.11</td><td>64.72</td><td>109.37</td><td>61.24</td><td>103.48</td></tr><tr><td>2000-07-01T00:00:00.000</td><td>62.82</td><td>105.99</td><td>65.010000000000005</td><td>109.68</td><td>61.71</td><td>104.12</td></tr><tr><td>2000-08-01T00:00:00.000</td><td>62.1</td><td>104.63</td><td>65.03</td><td>109.58</td><td>62.19</td><td>104.79</td></tr><tr><td>2000-09-01T00:00:00.000</td><td>61.21</td><td>103.03</td><td>64.8</td><td>109.06</td><td>62.68</td><td>105.5</td></tr><tr><td>2000-10-01T00:00:00.000</td><td>60.21</td><td>101.24</td><td>64.260000000000005</td><td>108.05</td><td>63.19</td><td>106.25</td></tr><tr><td>2000-11-01T00:00:00.000</td><td>59.16</td><td>99.39</td><td>63.45</td><td>106.6</td><td>63.63</td><td>106.91</td></tr><tr><td>2000-12-01T00:00:00.000</td><td>58.11</td><td>97.56</td><td>62.48</td><td>104.89</td><td>63.93</td><td>107.33</td></tr><tr><td>2001-01-01T00:00:00.000</td><td>57.09</td><td>95.76</td><td>61.39</td><td>102.99</td><td>64.03</td><td>107.42</td></tr><tr><td>2001-02-01T00:00:00.000</td><td>56.12</td><td>94.08</td><td>60.26</td><td>101.02</td><td>63.98</td><td>107.26</td></tr><tr><td>2001-03-01T00:00:00.000</td><td>55.26</td><td>92.56</td><td>59.13</td><td>99.05</td><td>63.79</td><td>106.86</td></tr><tr><td>2001-04-01T00:00:00.000</td><td>54.51</td><td>91.25</td><td>58.06</td><td>97.19</td><td>63.49</td><td>106.28</td></tr><tr><td>2001-05-01T00:00:00.000</td><td>53.93</td><td>90.19</td><td>57.15</td><td>95.58</td><td>63.08</td><td>105.49</td></tr><tr><td>2001-06-01T00:00:00.000</td><td>53.55</td><td>89.47</td><td>56.45</td><td>94.3</td><td>62.55</td><td>104.51</td></tr><tr><td>2001-07-01T00:00:00.000</td><td>53.46</td><td>89.21</td><td>55.93</td><td>93.33</td><td>61.91</td><td>103.31</td></tr><tr><td>2001-08-01T00:00:00.000</td><td>53.68</td><td>89.45</td><td>55.63</td><td>92.7</td><td>61.19</td><td>101.96</td></tr><tr><td>2001-09-01T00:00:00.000</td><td>54.23</td><td>90.22</td><td>55.58</td><td>92.46</td><td>60.47</td><td>100.6</td></tr><tr><td>2001-10-01T00:00:00.000</td><td>55.16</td><td>91.6</td><td>55.82</td><td>92.7</td><td>59.8</td><td>99.3</td></tr><tr><td>2001-11-01T00:00:00.000</td><td>56.41</td><td>93.48</td><td>56.27</td><td>93.24</td><td>59.22</td><td>98.13</td></tr><tr><td>2001-12-01T00:00:00.000</td><td>57.87</td><td>95.66</td><td>56.92</td><td>94.09</td><td>58.74</td><td>97.11</td></tr><tr><td>2002-01-01T00:00:00.000</td><td>59.37</td><td>97.88</td><td>57.75</td><td>95.22</td><td>58.33</td><td>96.17</td></tr><tr><td>2002-02-01T00:00:00.000</td><td>60.76</td><td>99.89</td><td>58.73</td><td>96.55</td><td>57.96</td><td>95.28</td></tr><tr><td>2002-03-01T00:00:00.000</td><td>61.91</td><td>101.46</td><td>59.74</td><td>97.9</td><td>57.74</td><td>94.62</td></tr><tr><td>2002-04-01T00:00:00.000</td><td>62.72</td><td>102.43</td><td>60.62</td><td>99</td><td>57.75</td><td>94.31</td></tr><tr><td>2002-05-01T00:00:00.000</td><td>63.13</td><td>102.72</td><td>61.29</td><td>99.73</td><td>57.98</td><td>94.34</td></tr><tr><td>2002-06-01T00:00:00.000</td><td>63.16</td><td>102.37</td><td>61.7</td><td>100</td><td>58.39</td><td>94.64</td></tr><tr><td>2002-07-01T00:00:00.000</td><td>62.91</td><td>101.55</td><td>61.92</td><td>99.94</td><td>58.9</td><td>95.08</td></tr><tr><td>2002-08-01T00:00:00.000</td><td>62.5</td><td>100.44</td><td>62.03</td><td>99.69</td><td>59.44</td><td>95.53</td></tr><tr><td>2002-09-01T00:00:00.000</td><td>62.08</td><td>99.32</td><td>62.11</td><td>99.36</td><td>59.94</td><td>95.89</td></tr><tr><td>2002-10-01T00:00:00.000</td><td>61.79</td><td>98.37</td><td>62.2</td><td>99.03</td><td>60.36</td><td>96.1</td></tr><tr><td>2002-11-01T00:00:00.000</td><td>61.64</td><td>97.65</td><td>62.31</td><td>98.72</td><td>60.7</td><td>96.16</td></tr><tr><td>2002-12-01T00:00:00.000</td><td>61.61</td><td>97.1</td><td>62.44</td><td>98.4</td><td>61</td><td>96.14</td></tr><tr><td>2003-01-01T00:00:00.000</td><td>61.65</td><td>96.64</td><td>62.56</td><td>98.07</td><td>61.32</td><td>96.13</td></tr><tr><td>2003-02-01T00:00:00.000</td><td>61.76</td><td>96.28</td><td>62.66</td><td>97.69</td><td>61.75</td><td>96.26</td></tr><tr><td>2003-03-01T00:00:00.000</td><td>61.97</td><td>96.05</td><td>62.72</td><td>97.22</td><td>62.26</td><td>96.5</td></tr><tr><td>2003-04-01T00:00:00.000</td><td>62.37</td><td>96.11</td><td>62.84</td><td>96.84</td><td>62.76</td><td>96.72</td></tr><tr><td>2003-05-01T00:00:00.000</td><td>63.08</td><td>96.62</td><td>63.15</td><td>96.73</td><td>63.19</td><td>96.79</td></tr><tr><td>2003-06-01T00:00:00.000</td><td>64.11</td><td>97.61</td><td>63.77</td><td>97.08</td><td>63.47</td><td>96.63</td></tr><tr><td>2003-07-01T00:00:00.000</td><td>65.36</td><td>98.9</td><td>64.67</td><td>97.85</td><td>63.66</td><td>96.32</td></tr><tr><td>2003-08-01T00:00:00.000</td><td>66.69</td><td>100.28</td><td>65.739999999999995</td><td>98.86</td><td>63.82</td><td>95.97</td></tr><tr><td>2003-09-01T00:00:00.000</td><td>67.98</td><td>101.56</td><td>66.900000000000006</td><td>99.95</td><td>63.97</td><td>95.58</td></tr><tr><td>2003-10-01T00:00:00.000</td><td>69.13</td><td>102.63</td><td>68.069999999999993</td><td>101.05</td><td>64.13</td><td>95.2</td></tr><tr><td>2003-11-01T00:00:00.000</td><td>70.14</td><td>103.46</td><td>69.19</td><td>102.07</td><td>64.33</td><td>94.9</td></tr><tr><td>2003-12-01T00:00:00.000</td><td>71.010000000000005</td><td>104.08</td><td>70.2</td><td>102.89</td><td>64.63</td><td>94.74</td></tr><tr><td>2004-01-01T00:00:00.000</td><td>71.75</td><td>104.5</td><td>70.989999999999995</td><td>103.39</td><td>65.099999999999994</td><td>94.81</td></tr><tr><td>2004-02-01T00:00:00.000</td><td>72.37</td><td>104.74</td><td>71.58</td><td>103.59</td><td>65.84</td><td>95.29</td></tr><tr><td>2004-03-01T00:00:00.000</td><td>72.88</td><td>104.81</td><td>72.010000000000005</td><td>103.57</td><td>66.819999999999993</td><td>96.1</td></tr><tr><td>2004-04-01T00:00:00.000</td><td>73.23</td><td>104.67</td><td>72.37</td><td>103.43</td><td>67.900000000000006</td><td>97.05</td></tr><tr><td>2004-05-01T00:00:00.000</td><td>73.430000000000007</td><td>104.31</td><td>72.64</td><td>103.19</td><td>69.010000000000005</td><td>98.03</td></tr><tr><td>2004-06-01T00:00:00.000</td><td>73.48</td><td>103.74</td><td>72.83</td><td>102.83</td><td>70.11</td><td>98.99</td></tr><tr><td>2004-07-01T00:00:00.000</td><td>73.400000000000006</td><td>103.02</td><td>72.94</td><td>102.37</td><td>71.17</td><td>99.89</td></tr><tr><td>2004-08-01T00:00:00.000</td><td>73.239999999999995</td><td>102.19</td><td>73.02</td><td>101.89</td><td>72.150000000000006</td><td>100.68</td></tr><tr><td>2004-09-01T00:00:00.000</td><td>73.069999999999993</td><td>101.36</td><td>73.13</td><td>101.44</td><td>73.09</td><td>101.39</td></tr><tr><td>2004-10-01T00:00:00.000</td><td>72.900000000000006</td><td>100.55</td><td>73.22</td><td>101</td><td>73.959999999999994</td><td>102.02</td></tr><tr><td>2004-11-01T00:00:00.000</td><td>72.73</td><td>99.76</td><td>73.33</td><td>100.58</td><td>74.72</td><td>102.49</td></tr><tr><td>2004-12-01T00:00:00.000</td><td>72.58</td><td>99</td><td>73.489999999999995</td><td>100.24</td><td>75.3</td><td>102.72</td></tr><tr><td>2005-01-01T00:00:00.000</td><td>72.48</td><td>98.34</td><td>73.67</td><td>99.95</td><td>75.709999999999994</td><td>102.72</td></tr><tr><td>2005-02-01T00:00:00.000</td><td>72.5</td><td>97.84</td><td>73.89</td><td>99.72</td><td>76.03</td><td>102.61</td></tr><tr><td>2005-03-01T00:00:00.000</td><td>72.650000000000006</td><td>97.53</td><td>74.17</td><td>99.58</td><td>76.34</td><td>102.49</td></tr><tr><td>2005-04-01T00:00:00.000</td><td>72.98</td><td>97.47</td><td>74.47</td><td>99.46</td><td>76.67</td><td>102.4</td></tr><tr><td>2005-05-01T00:00:00.000</td><td>73.510000000000005</td><td>97.68</td><td>74.78</td><td>99.37</td><td>77</td><td>102.32</td></tr><tr><td>2005-06-01T00:00:00.000</td><td>74.239999999999995</td><td>98.17</td><td>75.13</td><td>99.35</td><td>77.290000000000006</td><td>102.2</td></tr><tr><td>2005-07-01T00:00:00.000</td><td>75.12</td><td>98.86</td><td>75.58</td><td>99.46</td><td>77.55</td><td>102.04</td></tr><tr><td>2005-08-01T00:00:00.000</td><td>76.06</td><td>99.61</td><td>76.209999999999994</td><td>99.81</td><td>77.73</td><td>101.79</td></tr><tr><td>2005-09-01T00:00:00.000</td><td>76.92</td><td>100.28</td><td>76.95</td><td>100.32</td><td>77.87</td><td>101.51</td></tr><tr><td>2005-10-01T00:00:00.000</td><td>77.650000000000006</td><td>100.77</td><td>77.72</td><td>100.86</td><td>78.010000000000005</td><td>101.23</td></tr><tr><td>2005-11-01T00:00:00.000</td><td>78.260000000000005</td><td>101.11</td><td>78.44</td><td>101.35</td><td>78.16</td><td>100.98</td></tr><tr><td>2005-12-01T00:00:00.000</td><td>78.739999999999995</td><td>101.3</td><td>79.06</td><td>101.7</td><td>78.38</td><td>100.84</td></tr><tr><td>2006-01-01T00:00:00.000</td><td>79.13</td><td>101.37</td><td>79.55</td><td>101.91</td><td>78.69</td><td>100.81</td></tr><tr><td>2006-02-01T00:00:00.000</td><td>79.400000000000006</td><td>101.31</td><td>79.900000000000006</td><td>101.95</td><td>79.12</td><td>100.96</td></tr><tr><td>2006-03-01T00:00:00.000</td><td>79.599999999999994</td><td>101.17</td><td>80.099999999999994</td><td>101.81</td><td>79.56</td><td>101.12</td></tr><tr><td>2006-04-01T00:00:00.000</td><td>79.75</td><td>100.98</td><td>80.2</td><td>101.55</td><td>80</td><td>101.29</td></tr><tr><td>2006-05-01T00:00:00.000</td><td>79.849999999999994</td><td>100.74</td><td>80.23</td><td>101.22</td><td>80.42</td><td>101.46</td></tr><tr><td>2006-06-01T00:00:00.000</td><td>79.94</td><td>100.51</td><td>80.23</td><td>100.86</td><td>80.790000000000006</td><td>101.56</td></tr><tr><td>2006-07-01T00:00:00.000</td><td>80.069999999999993</td><td>100.32</td><td>80.17</td><td>100.45</td><td>81.13</td><td>101.66</td></tr><tr><td>2006-08-01T00:00:00.000</td><td>80.25</td><td>100.23</td><td>80.2</td><td>100.17</td><td>81.48</td><td>101.77</td></tr><tr><td>2006-09-01T00:00:00.000</td><td>80.540000000000006</td><td>100.28</td><td>80.31</td><td>99.99</td><td>81.88</td><td>101.95</td></tr><tr><td>2006-10-01T00:00:00.000</td><td>80.89</td><td>100.43</td><td>80.52</td><td>99.96</td><td>82.28</td><td>102.15</td></tr><tr><td>2006-11-01T00:00:00.000</td><td>81.33</td><td>100.7</td><td>80.81</td><td>100.06</td><td>82.62</td><td>102.3</td></tr><tr><td>2006-12-01T00:00:00.000</td><td>81.849999999999994</td><td>101.07</td><td>81.150000000000006</td><td>100.21</td><td>82.94</td><td>102.42</td></tr><tr><td>2007-01-01T00:00:00.000</td><td>82.39</td><td>101.49</td><td>81.540000000000006</td><td>100.45</td><td>83.21</td><td>102.49</td></tr><tr><td>2007-02-01T00:00:00.000</td><td>82.92</td><td>101.9</td><td>82.01</td><td>100.79</td><td>83.37</td><td>102.47</td></tr><tr><td>2007-03-01T00:00:00.000</td><td>83.36</td><td>102.24</td><td>82.59</td><td>101.29</td><td>83.4</td><td>102.28</td></tr><tr><td>2007-04-01T00:00:00.000</td><td>83.79</td><td>102.56</td><td>83.31</td><td>101.97</td><td>83.27</td><td>101.92</td></tr><tr><td>2007-05-01T00:00:00.000</td><td>84.22</td><td>102.9</td><td>84.12</td><td>102.79</td><td>83.03</td><td>101.46</td></tr><tr><td>2007-06-01T00:00:00.000</td><td>84.62</td><td>103.23</td><td>84.95</td><td>103.63</td><td>82.75</td><td>100.94</td></tr><tr><td>2007-07-01T00:00:00.000</td><td>84.97</td><td>103.51</td><td>85.82</td><td>104.55</td><td>82.4</td><td>100.38</td></tr><tr><td>2007-08-01T00:00:00.000</td><td>85.2</td><td>103.67</td><td>86.65</td><td>105.43</td><td>82.05</td><td>99.84</td></tr><tr><td>2007-09-01T00:00:00.000</td><td>85.33</td><td>103.71</td><td>87.48</td><td>106.33</td><td>81.69</td><td>99.3</td></tr><tr><td>2007-10-01T00:00:00.000</td><td>85.34</td><td>103.64</td><td>88.35</td><td>107.3</td><td>81.430000000000007</td><td>98.89</td></tr><tr><td>2007-11-01T00:00:00.000</td><td>85.21</td><td>103.42</td><td>89.2</td><td>108.26</td><td>81.349999999999994</td><td>98.73</td></tr><tr><td>2007-12-01T00:00:00.000</td><td>84.96</td><td>103.06</td><td>90.06</td><td>109.24</td><td>81.47</td><td>98.83</td></tr><tr><td>2008-01-01T00:00:00.000</td><td>84.6</td><td>102.59</td><td>90.78</td><td>110.08</td><td>81.84</td><td>99.24</td></tr><tr><td>2008-02-01T00:00:00.000</td><td>84.19</td><td>102.07</td><td>91.23</td><td>110.6</td><td>82.45</td><td>99.96</td></tr><tr><td>2008-03-01T00:00:00.000</td><td>83.74</td><td>101.51</td><td>91.36</td><td>110.74</td><td>83.36</td><td>101.04</td></tr><tr><td>2008-04-01T00:00:00.000</td><td>83.18</td><td>100.81</td><td>91.16</td><td>110.49</td><td>84.49</td><td>102.4</td></tr><tr><td>2008-05-01T00:00:00.000</td><td>82.38</td><td>99.84</td><td>90.47</td><td>109.64</td><td>85.78</td><td>103.96</td></tr><tr><td>2008-06-01T00:00:00.000</td><td>81.27</td><td>98.49</td><td>89.15</td><td>108.03</td><td>87.2</td><td>105.67</td></tr><tr><td>2008-07-01T00:00:00.000</td><td>79.790000000000006</td><td>96.68</td><td>87.07</td><td>105.49</td><td>88.71</td><td>107.48</td></tr><tr><td>2008-08-01T00:00:00.000</td><td>77.97</td><td>94.44</td><td>84.29</td><td>102.09</td><td>90.16</td><td>109.2</td></tr><tr><td>2008-09-01T00:00:00.000</td><td>75.790000000000006</td><td>91.75</td><td>80.709999999999994</td><td>97.7</td><td>91.4</td><td>110.64</td></tr><tr><td>2008-10-01T00:00:00.000</td><td>73.459999999999994</td><td>88.85</td><td>76.489999999999995</td><td>92.53</td><td>92.24</td><td>111.57</td></tr><tr><td>2008-11-01T00:00:00.000</td><td>71.34</td><td>86.2</td><td>72.25</td><td>87.3</td><td>92.45</td><td>111.71</td></tr><tr><td>2008-12-01T00:00:00.000</td><td>69.959999999999994</td><td>84.42</td><td>68.89</td><td>83.12</td><td>91.75</td><td>110.7</td></tr><tr><td>2009-01-01T00:00:00.000</td><td>69.790000000000006</td><td>84.06</td><td>67.040000000000006</td><td>80.739999999999995</td><td>90.14</td><td>108.57</td></tr><tr><td>2009-02-01T00:00:00.000</td><td>70.87</td><td>85.16</td><td>66.849999999999994</td><td>80.33</td><td>88.02</td><td>105.77</td></tr><tr><td>2009-03-01T00:00:00.000</td><td>72.89</td><td>87.35</td><td>67.84</td><td>81.3</td><td>85.59</td><td>102.57</td></tr><tr><td>2009-04-01T00:00:00.000</td><td>75.44</td><td>90.12</td><td>69.7</td><td>83.26</td><td>83.12</td><td>99.29</td></tr><tr><td>2009-05-01T00:00:00.000</td><td>78.19</td><td>93.06</td><td>72.069999999999993</td><td>85.78</td><td>80.819999999999993</td><td>96.19</td></tr><tr><td>2009-06-01T00:00:00.000</td><td>80.94</td><td>95.94</td><td>74.72</td><td>88.57</td><td>78.83</td><td>93.43</td></tr><tr><td>2009-07-01T00:00:00.000</td><td>83.51</td><td>98.54</td><td>77.3</td><td>91.21</td><td>77.39</td><td>91.31</td></tr><tr><td>2009-08-01T00:00:00.000</td><td>85.78</td><td>100.72</td><td>79.650000000000006</td><td>93.51</td><td>76.55</td><td>89.88</td></tr><tr><td>2009-09-01T00:00:00.000</td><td>87.71</td><td>102.44</td><td>81.81</td><td>95.54</td><td>76.3</td><td>89.11</td></tr><tr><td>2009-10-01T00:00:00.000</td><td>89.3</td><td>103.71</td><td>83.72</td><td>97.23</td><td>76.569999999999993</td><td>88.92</td></tr><tr><td>2009-11-01T00:00:00.000</td><td>90.6</td><td>104.61</td><td>85.44</td><td>98.65</td><td>77.16</td><td>89.09</td></tr><tr><td>2009-12-01T00:00:00.000</td><td>91.7</td><td>105.23</td><td>87.06</td><td>99.91</td><td>77.98</td><td>89.49</td></tr><tr><td>2010-01-01T00:00:00.000</td><td>92.64</td><td>105.65</td><td>88.57</td><td>101</td><td>79</td><td>90.08</td></tr><tr><td>2010-02-01T00:00:00.000</td><td>93.46</td><td>105.89</td><td>90.05</td><td>102.02</td><td>80.16</td><td>90.82</td></tr><tr><td>2010-03-01T00:00:00.000</td><td>94.07</td><td>105.89</td><td>91.39</td><td>102.86</td><td>81.44</td><td>91.67</td></tr><tr><td>2010-04-01T00:00:00.000</td><td>94.52</td><td>105.69</td><td>92.54</td><td>103.48</td><td>82.77</td><td>92.56</td></tr><tr><td>2010-05-01T00:00:00.000</td><td>94.87</td><td>105.39</td><td>93.58</td><td>103.95</td><td>84.11</td><td>93.43</td></tr><tr><td>2010-06-01T00:00:00.000</td><td>95.16</td><td>105.02</td><td>94.52</td><td>104.31</td><td>85.4</td><td>94.24</td></tr><tr><td>2010-07-01T00:00:00.000</td><td>95.47</td><td>104.66</td><td>95.47</td><td>104.66</td><td>86.57</td><td>94.91</td></tr><tr><td>2010-08-01T00:00:00.000</td><td>95.79</td><td>104.35</td><td>96.43</td><td>105.04</td><td>87.6</td><td>95.43</td></tr><tr><td>2010-09-01T00:00:00.000</td><td>96.14</td><td>104.06</td><td>97.45</td><td>105.49</td><td>88.55</td><td>95.85</td></tr><tr><td>2010-10-01T00:00:00.000</td><td>96.51</td><td>103.82</td><td>98.54</td><td>106.01</td><td>89.46</td><td>96.24</td></tr><tr><td>2010-11-01T00:00:00.000</td><td>96.91</td><td>103.64</td><td>99.66</td><td>106.58</td><td>90.4</td><td>96.67</td></tr><tr><td>2010-12-01T00:00:00.000</td><td>97.3</td><td>103.45</td><td>100.69</td><td>107.06</td><td>91.48</td><td>97.26</td></tr><tr><td>2011-01-01T00:00:00.000</td><td>97.6</td><td>103.19</td><td>101.46</td><td>107.28</td><td>92.74</td><td>98.06</td></tr><tr><td>2011-02-01T00:00:00.000</td><td>97.8</td><td>102.85</td><td>101.92</td><td>107.19</td><td>94.14</td><td>99.01</td></tr><tr><td>2011-03-01T00:00:00.000</td><td>97.89</td><td>102.44</td><td>102.05</td><td>106.79</td><td>95.54</td><td>99.97</td></tr><tr><td>2011-04-01T00:00:00.000</td><td>97.88</td><td>101.93</td><td>101.9</td><td>106.11</td><td>96.94</td><td>100.95</td></tr><tr><td>2011-05-01T00:00:00.000</td><td>97.74</td><td>101.32</td><td>101.57</td><td>105.29</td><td>98.27</td><td>101.86</td></tr><tr><td>2011-06-01T00:00:00.000</td><td>97.49</td><td>100.63</td><td>101.11</td><td>104.35</td><td>99.44</td><td>102.64</td></tr><tr><td>2011-07-01T00:00:00.000</td><td>97.19</td><td>99.91</td><td>100.57</td><td>103.38</td><td>100.45</td><td>103.26</td></tr><tr><td>2011-08-01T00:00:00.000</td><td>96.89</td><td>99.21</td><td>100</td><td>102.39</td><td>101.27</td><td>103.7</td></tr><tr><td>2011-09-01T00:00:00.000</td><td>96.71</td><td>98.67</td><td>99.45</td><td>101.47</td><td>101.87</td><td>103.94</td></tr><tr><td>2011-10-01T00:00:00.000</td><td>96.74</td><td>98.37</td><td>99.07</td><td>100.74</td><td>102.28</td><td>104</td></tr><tr><td>2011-11-01T00:00:00.000</td><td>96.97</td><td>98.29</td><td>98.84</td><td>100.18</td><td>102.53</td><td>103.93</td></tr><tr><td>2011-12-01T00:00:00.000</td><td>97.34</td><td>98.37</td><td>98.77</td><td>99.81</td><td>102.61</td><td>103.7</td></tr><tr><td>2012-01-01T00:00:00.000</td><td>97.74</td><td>98.5</td><td>98.91</td><td>99.67</td><td>102.54</td><td>103.33</td></tr><tr><td>2012-02-01T00:00:00.000</td><td>98.04</td><td>98.55</td><td>99.18</td><td>99.69</td><td>102.43</td><td>102.96</td></tr><tr><td>2012-03-01T00:00:00.000</td><td>98.2</td><td>98.46</td><td>99.63</td><td>99.9</td><td>102.43</td><td>102.7</td></tr><tr><td>2012-04-01T00:00:00.000</td><td>98.13</td><td>98.16</td><td>100.01</td><td>100.04</td><td>102.5</td><td>102.53</td></tr><tr><td>2012-05-01T00:00:00.000</td><td>97.9</td><td>97.72</td><td>100.24</td><td>100.06</td><td>102.56</td><td>102.37</td></tr><tr><td>2012-06-01T00:00:00.000</td><td>97.63</td><td>97.25</td><td>100.33</td><td>99.94</td><td>102.58</td><td>102.18</td></tr><tr><td>2012-07-01T00:00:00.000</td><td>97.44</td><td>96.88</td><td>100.46</td><td>99.88</td><td>102.49</td><td>101.9</td></tr><tr><td>2012-08-01T00:00:00.000</td><td>97.5</td><td>96.76</td><td>100.58</td><td>99.82</td><td>102.4</td><td>101.63</td></tr><tr><td>2012-09-01T00:00:00.000</td><td>97.83</td><td>96.92</td><td>100.67</td><td>99.74</td><td>102.39</td><td>101.43</td></tr><tr><td>2012-10-01T00:00:00.000</td><td>98.41</td><td>97.33</td><td>100.73</td><td>99.63</td><td>102.46</td><td>101.34</td></tr><tr><td>2012-11-01T00:00:00.000</td><td>99.16</td><td>97.92</td><td>100.74</td><td>99.48</td><td>102.66</td><td>101.38</td></tr><tr><td>2012-12-01T00:00:00.000</td><td>99.92</td><td>98.54</td><td>100.76</td><td>99.36</td><td>102.98</td><td>101.55</td></tr><tr><td>2013-01-01T00:00:00.000</td><td>100.57</td><td>99.03</td><td>100.85</td><td>99.31</td><td>103.33</td><td>101.74</td></tr><tr><td>2013-02-01T00:00:00.000</td><td>101.01</td><td>99.33</td><td>100.89</td><td>99.2</td><td>103.69</td><td>101.96</td></tr><tr><td>2013-03-01T00:00:00.000</td><td>101.29</td><td>99.47</td><td>100.93</td><td>99.12</td><td>103.9</td><td>102.03</td></tr><tr><td>2013-04-01T00:00:00.000</td><td>101.48</td><td>99.53</td><td>101.05</td><td>99.1</td><td>103.87</td><td>101.87</td></tr><tr><td>2013-05-01T00:00:00.000</td><td>101.63</td><td>99.54</td><td>101.23</td><td>99.15</td><td>103.64</td><td>101.51</td></tr><tr><td>2013-06-01T00:00:00.000</td><td>101.78</td><td>99.56</td><td>101.41</td><td>99.2</td><td>103.32</td><td>101.07</td></tr><tr><td>2013-07-01T00:00:00.000</td><td>102.04</td><td>99.69</td><td>101.53</td><td>99.19</td><td>102.99</td><td>100.61</td></tr><tr><td>2013-08-01T00:00:00.000</td><td>102.38</td><td>99.89</td><td>101.73</td><td>99.25</td><td>102.68</td><td>100.19</td></tr><tr><td>2013-09-01T00:00:00.000</td><td>102.74</td><td>100.12</td><td>102.02</td><td>99.42</td><td>102.39</td><td>99.78</td></tr><tr><td>2013-10-01T00:00:00.000</td><td>103.07</td><td>100.31</td><td>102.39</td><td>99.65</td><td>102.1</td><td>99.37</td></tr><tr><td>2013-11-01T00:00:00.000</td><td>103.37</td><td>100.48</td><td>102.82</td><td>99.94</td><td>101.78</td><td>98.94</td></tr><tr><td>2013-12-01T00:00:00.000</td><td>103.67</td><td>100.64</td><td>103.25</td><td>100.24</td><td>101.47</td><td>98.5</td></tr><tr><td>2014-01-01T00:00:00.000</td><td>103.95</td><td>100.78</td><td>103.6</td><td>100.44</td><td>101.24</td><td>98.15</td></tr><tr><td>2014-02-01T00:00:00.000</td><td>104.26</td><td>100.96</td><td>103.92</td><td>100.63</td><td>101.09</td><td>97.89</td></tr><tr><td>2014-03-01T00:00:00.000</td><td>104.57</td><td>101.13</td><td>104.25</td><td>100.82</td><td>101.06</td><td>97.73</td></tr><tr><td>2014-04-01T00:00:00.000</td><td>104.9</td><td>101.31</td><td>104.65</td><td>101.07</td><td>101.03</td><td>97.58</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr></tbody></table></div></div></div></div>")
+	 		    	$('body').append("<div class='modal fade' id='"+_id+"' tabindex='0' role='dialog' aria-labelledby='loginBlockLabel' aria-hidden='true'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel'>"+name+"</h4></div><div class='modal-body'></div></div></div></div>")
+	 		    	//$("table[id="+_id+"]").dataTable();
+	 		    	
+				 	
+					
+	 		    	//$.getJSON(getDataURL, function(data){
+	 		    	
+	 		    	//});
+	 		    	
+	 		    	//準備freewall
+	 		    	if(value.defaultViewType._id=="chart")
+	 		    	{
+	 		    		wallImg="img/view/chart.png";
+	 		    	}
+	 		    	else if(value.defaultViewType._id=="map")
+	 		    	{
+	 		    		wallImg="img/view/map.png";
+	 		    	}
+	 		    	else if(value.defaultViewType._id=="table")
+	 		    	{
+	 		    		wallImg="img/view/table.png";
+	 		    	}
+	 		    	//var wall_html="<div class='brick'><a href='"+getDataURL+"' data-toggle='modal' data-target='#"+_id+"'><img src='"+wallImg+"' width='100%'><div class='info'>";
+	 		    	var wall_html="<div class='brick'><a href='#' data-toggle='modal' data-target='#"+_id+"'><img src='"+wallImg+"' width='100%'><div class='info'>";
+	 		    	wall_html=wall_html+"<h3>"+name+"</h3>";
+	 		    	wall_html=wall_html+"<h5>更新頻率："+frequency+"/次</h5><br/>提供機關："+department+"</h5>";
+	 		    	wall_html=wall_html+"<br/><br/><div id='infoStorage' attr1='"+action+"'></div><div class='read-more'>觀看詳細資料...</div></div></a></div>";
+	 		    	
+	 		    	
+	 		    	$("#freewall").append(wall_html);
+	 		    	
+ 	 		    	$.each(value.viewTypes, function (index_vt, value_vt) {
+ 	 		    		//alert(value_vt._id);
+ 	 		    		//alert(value_vt.name);
+ 	 		    	});
+	 	 		  	//alert(value.defaultViewType);
+	 	 		    //alert(value.defaultViewType._id);
+ 	 		    	$.each(value.defaultViewType, function (index_dvt, value_dvt) {
+ 	 		    		//alert(value_dvt._id);
+ 	 		    		//alert(value_dvt.name);
+ 	 		    	});
+	 		    });
+	 		});
+			
+			$("#searchBlock").attr("class","collapse");//關閉
+			
+	    });
+
+		var nua = navigator.userAgent
+		var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
+		if (isAndroid) {
+		  $('select.form-control').removeClass('form-control').css('width', '100%')
+		}
+
+		$('#example').dataTable();
+		
+		 //$('#chartViewContainer').resize();
+		 $(window).resize(function() {
+			 	//alert("22");
+			    //height = chart.height;
+			    //width = $("#chartViewContainer").width();
+			    //chart.setSize(width, height, doAnimation = true);
+		});
+		 
+		 $('.carousel-indicators li').click(function(e){
+			   // e.stopPropagation();
+			  
+			    var goTo = $(this).data('slide-to');
+			    //alert(goTo);
+			    if(goTo==2)
+			    {
+			    	setTimeout("$(window).resize();", 100);	
+			    }
+			    
+		});
+		 
+		 
+		 $('a[data-slide=next]').click(function() {
+			//alert($('.active').attr('data-slide-to'));
+			if($('.active').attr('data-slide-to')==1)
+			{
+				setTimeout("$(window).resize();", 100);	 
+			}
+			else if($('.active').attr('data-slide-to')==2)
+			{
+				$('#view_map2').append("<iframe name='googleTarget' src='https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334' width='100%' height='400' frameborder='0' style='border:0'></iframe>");
+				//setTimeout("$(window).resize();", 100);	 
+			}
+			
+		 });
+		 $('a[data-slide=prev]').click(function() {
+			//alert($('.active').attr('data-slide-to'));
+			if($('.active').attr('data-slide-to')==0)
+			{
+				$('#view_map2').append("<iframe name='googleTarget' src='https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334' width='100%' height='400' frameborder='0' style='border:0'></iframe>");
+				//setTimeout("$(window).resize();", 100);	 
+			}
+			else if($('.active').attr('data-slide-to')==3)
+			{
+				//$('#view_map2').append("<iframe name='googleTarget' src='https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334' width='100%' height='400' frameborder='0' style='border:0'></iframe>");
+				setTimeout("$(window).resize();", 100);	 
+			}
+		});
+		 
+		 //$('iframe[name=googleTarget]').attr("src","https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334");
+		 
+		 
+	  		/*
+			var wall = new freewall("#freewall");
+			wall.reset({
+				selector: '.brick',
+				animate: true,
+				cellW: 200,
+				cellH: 'auto',
+				onResize: function() {
+					wall.fitWidth();
+				}
+			});
+			
+			var images = wall.container.find('.brick');
+			var length = images.length;
+			images.css({visibility: 'hidden'});
+			images.find('img').load(function() {
+				-- length;
+				if (!length) {
+					setTimeout(function() {
+						images.css({visibility: 'visible'});
+						wall.fitWidth();
+					}, 505);
+				}
+			});
+			*/
+		 
+		 
+  	});
+	</script>
+	
+	
+</head>
+
+  <body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="img/OReader_logo.png" width="150px" height="40px"></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="#" data-toggle="collapse" data-target="#searchBlock"><img src="img/OReader_icon_search.png" width="30px" height="30px"> 搜尋</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#loginBlock"><img src="img/OReader_icon_user.png" width="30px" height="30px"> 使用者</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	<!--搜尋彈出區塊-->
+	<div id="searchBlock" class="collapse">
+		<div class="container">				
+			<form class="form-horizontal">
+				<fieldset> 
+
+					<!-- Form Name -->
+					<legend>Form Name</legend>
+
+
+					<div class="control-group">
+					  <label class="control-label" for="category">category</label>
+					  <div class="controls">
+						<select id="category" name="category" class="input-xlarge">
+						</select>
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="control-group">
+					  <label class="control-label" for="data_description">data_description</label>
+					  <div class="controls">
+						<input id="data_description" name="data_description" type="text" placeholder="" class="input-xlarge">
+						<p class="help-block">s</p>
+					  </div>
+					</div>
+					
+					<input type="button" value="搜尋" id="btnSearch">
+					
+					<!-- Text input-->
+					<div class="control-group">
+					  <label class="control-label" for="column">主要欄位說明</label>
+					  <div class="controls">
+						<input id="column" name="column" type="text" placeholder="輸入欄位名稱" class="input-xlarge">
+						<p class="help-block">help</p>
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="control-group">
+					  <label class="control-label" for="holder">資料提供機關</label>
+					  <div class="controls">
+						<input id="holder" name="holder" type="text" placeholder="" class="input-xlarge">
+						<p class="help-block">help</p>
+					  </div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+					  <label class="control-label" for="frequency">更新頻率</label>
+					  <div class="controls">
+						<select id="frequency" name="frequency" class="input-xlarge">
+						  <option>不定期</option>
+						  <option>每日</option>
+						  <option>每週</option>
+						  <option>每月</option>
+						  <option>每季</option>
+						  <option>半年</option>
+						  <option>每年</option>
+						</select>
+					  </div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+					  <label class="control-label" for="price">計費方式</label>
+					  <div class="controls">
+						<select id="price" name="price" class="input-xlarge">
+						  <option>免費</option>
+						  <option>付費使用</option>
+						</select>
+					  </div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+					  <label class="control-label" for="datatype">資料提供格式</label>
+					  <div class="controls">
+						<select id="datatype" name="datatype" class="input-xlarge">
+						  <option>JSON</option>
+						  <option>XML</option>
+						  <option>CSV</option>
+						  <option>DOC</option>
+						  <option>PDF</option>
+						</select>
+					  </div>
+					</div>
+
+				</fieldset>
+			</form>	
+		</div>
+	</div>
+	
+	
+	<!--主畫面開始-->
+    <div class="container">
+		<!--FREEWALL 呈現區塊-->
+		<div id="freewall" class="free-wall">
+
+		</div>
+
+    </div>
+	
+	<!-- 彈出的登入視窗-->
+		<div class="modal fade" id="loginBlock" tabindex="-2" role="dialog" aria-labelledby="loginBlockLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">使用者</h4>
+					</div>
+					<div class="modal-body">
+						Facebook | Google
+					</div>
+				  <!--
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				  </div>
+				  -->
+				</div>
+			</div>
+		</div>
+		
+		<!-- 彈出的內容頁視窗 -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="-title" id="myModalLabel">景氣指標</h4>
+					</div>
+					<div class="modal-body">
+						<!--資料輪播View-->
+						<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+						  <!-- Indicators -->
+						  <ol class="carousel-indicators">
+							<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="3"></li>
+						  </ol>
+
+						  <!-- Wrapper for slides -->
+						  <div class="carousel-inner">
+							<div class="item active">
+							  <div id="view_map" style="width:100%; height:400px;">
+									<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334" width="100%" height="400" frameborder="0" style="border:0"></iframe>
+								</div>
+							  <div class="carousel-caption">
+								...
+							  </div>
+							</div>
+							<div class="item">
+							  <div id="view_table" style="width:100%; height:400px;">
+								<!--datatable內容-->
+								<table id="example" class="display" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Position</th>
+											<th>Office</th>
+											<th>Age</th>
+											<th>Start date</th>
+											<th>Salary</th>
+										</tr>
+									</thead>
+							 
+									<tfoot>
+										<tr>
+											<th>Name</th>
+											<th>Position</th>
+											<th>Office</th>
+											<th>Age</th>
+											<th>Start date</th>
+											<th>Salary</th>
+										</tr>
+									</tfoot>
+							 
+									<tbody>
+										<tr>
+											<td>Tiger Nixon</td>
+											<td>System Architect</td>
+											<td>Edinburgh</td>
+											<td>61</td>
+											<td>2011/04/25</td>
+											<td>$320,800</td>
+										</tr>
+										<tr>
+											<td>Garrett Winters</td>
+											<td>Accountant</td>
+											<td>Tokyo</td>
+											<td>63</td>
+											<td>2011/07/25</td>
+											<td>$170,750</td>
+										</tr>
+										<tr>
+											<td>Ashton Cox</td>
+											<td>Junior Technical Author</td>
+											<td>San Francisco</td>
+											<td>66</td>
+											<td>2009/01/12</td>
+											<td>$86,000</td>
+										</tr>
+										<tr>
+											<td>Cedric Kelly</td>
+											<td>Senior Javascript Developer</td>
+											<td>Edinburgh</td>
+											<td>22</td>
+											<td>2012/03/29</td>
+											<td>$433,060</td>
+										</tr>
+										<tr>
+											<td>Airi Satou</td>
+											<td>Accountant</td>
+											<td>Tokyo</td>
+											<td>33</td>
+											<td>2008/11/28</td>
+											<td>$162,700</td>
+										</tr>
+									</tbody>
+								</table>
+							  </div>
+							  <div class="carousel-caption">
+								view_table
+							  </div>
+							</div>
+							<div class="item">
+							  <div id="view_chart" style="width:100%; height:400px; border:#C00 2px solid;">
+								<!--圖內容-->
+								<div id="chartViewContainer2" style="height: 400px; width:auto;"></div>
+
+							  </div>
+							  <div class="carousel-caption">
+								view_chart
+							  </div>
+							</div>
+							<div class="item">
+							  <div id="view_map2" style="width:100%; height:400px;">
+									
+							  </div>
+							  <div class="carousel-caption">
+								text2
+							  </div>
+							</div>
+						  </div>
+
+						  <!-- Controls -->
+						  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left"></span>
+						  </a>
+						  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"></span>
+						  </a>
+						</div>
+						<!--
+						<div id="view_map" style="width:100%; height:400px;">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7280.7860252832625!2d120.646655!3d24.161016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5Y-w5Lit5biC6LGQ5Y6f5Y2A6LGQ5p2x6Lev5Y-w5Lit5biC5pS_5bqc6K2m5a-f5bGA!5e0!3m2!1szh-TW!2stw!4v1400837263334" width="100%" height="400" frameborder="0" style="border:0"></iframe>
+						</div>-->
+						<!--
+						<div id="view_table" style="width:100%; height:400px; border:#C00 2px solid;"></div>
+						<div id="view_chart" style="width:100%; height:400px; border:#C00 2px solid;"></div>-->
+						<!--功能區塊-->
+						<div id="function_Bar" style="background:#000;">
+							<span>檢視：<a href="">表格</a> ｜ <a href="">圖</a> ｜ <a href="">地圖</a></span>　　
+							<span>資料格式：<a href="">JSON</a> ｜ <a href="">XML</a> ｜ <a href="">CSV</a></span>　　
+							<span>分享：<a href="">Facebook</a> ｜ <a href="">Google+</a> ｜ <a href="">Plurk</a> ｜ <a href="">Twitter</a></span>　　
+							<span><a href="">最愛</a></span>
+						</div>
+						<!--資訊內容區塊-->
+						<div id="content_block" style="padding:15px;">
+							<table summary="最新資料-臺中市不動產經紀業名冊" style="color:#000;">
+								<tr>
+								<th width="100px">檔案格式</th><td>XLS</td>
+								</tr>
+								<tr>
+								<th>更新頻率</th><td>每月</td>
+								</tr>
+								<tr>
+								<th>流通供應單位電話</th><td>04-22170716</td>
+								</tr>
+								<tr>
+								<th>欄位說明</th><td>登錄號碼,統一編號,經紀業名稱,許可日期1,許可文號1,設立備查日期,設立備查文號,地址,加盟經營，加盟公司名稱,組織型態,營業項目(不動產仲介經紀業),營業項目(不動產代銷經紀業),經營國外不動產仲介或代銷業務,負責人姓名,加入公會名稱1,加入公會名稱2,執業狀態</td>
+								</tr>
+								<tr>
+								<th>檔案下載</th><td><a target="_blank" href="public/data/f1400115719847.xls">http://data.taichung.gov.tw:80/GipOpenWeb/wSite/public/data/f1400115719847.xls</a></td>
+								</tr>
+								<tr>
+								<th>單位</th><td>臺中市政府地政局‧資訊室</td>
+								</tr>
+								<tr>
+								<th>資料大類</th><td>住房建築</td>
+								</tr>
+								<tr>
+								<th>收錄期間(起)</th><td><span class="date">2014/05/14</span></td>
+								</tr>
+								<tr>
+								<th>收錄期間(迄)</th><td><span class="date">2014/05/14</span></td>
+								</tr>
+								<tr>
+								<th>最新更新日</th><td><span class="date">2014/05/15</span></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				  <!--
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				  </div>
+				  -->
+				</div>
+			</div>
+		</div>
+	<!-- /.container -->	
+    <!-- footer
+    ================================================== -->	
+    <div id="footer" style="background-color: #222;
+		border-color: #080808;
+		bottom: 0;
+		margin-bottom: 0;
+		border-width: 1px 0 0;
+		position: fixed;
+		right: 0;
+		left: 0;
+		z-index: 1030;
+		min-height: 50px;
+		border: 1px solid transparent;
+			text-align:center;
+			font-size:12px;
+			padding:5px;
+			margin:5px;
+			color:#FFF;
+			margin:0px;">
+        <div class="navbar-footer">
+            <a href="#">關於本站</a>
+			<a href="#">聯絡我們</a>
+			<a href="#">使用說明</a>
+			<a href="#">贊助資訊</a>
+		</div>
+		<div>Copyright © 2014 Userful Peoples</div>
+
+    </div>
+    	<script type="text/javascript">
+			
+			var wall = new freewall("#freewall");
+			wall.reset({
+				selector: '.brick',
+				animate: true,
+				cellW: 200,
+				cellH: 'auto',
+				onResize: function() {
+					wall.fitWidth();
+				}
+			});
+			
+			var images = wall.container.find('.brick');
+			var length = images.length;
+			images.css({visibility: 'hidden'});
+			images.find('img').load(function() {
+				-- length;
+				if (!length) {
+					setTimeout(function() {
+						images.css({visibility: 'visible'});
+						wall.fitWidth();
+					}, 505);
+				}
+			});
+
+		</script>		
+		<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
