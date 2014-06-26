@@ -1,0 +1,20 @@
+div.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+	div.container
+		div.navbar-header
+			button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+				span.sr-only Toggle navigation
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+			a.navbar-brand(href='#')
+				img(src='img/OReader_logo.png', width='150px', height='40px')
+		div.collapse.navbar-collapse
+			ul.nav.navbar-nav
+				li
+					a(href='#', data-toggle='collapse', data-target='#searchBlock')
+						img(src='img/OReader_icon_search.png', width='30px', height='30px')
+						搜尋
+				li
+					a(href='#', data-toggle='modal', data-target='#loginBlock')
+						img(src='img/OReader_icon_user.png', width='30px', height='30px')
+						使用者

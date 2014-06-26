@@ -1,7 +1,10 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+  include head
   body
-    block content
+    include navibar
+    include search
+    include freewall
+    include login
+    include footer
+    include scripts

@@ -7,8 +7,9 @@ var path = require('path'),
 
 routes.index = function(req, res){
 	//res.render('index', { title: 'Useful People1' });
-	res.sendfile(path.resolve('./files/practice.html'));
+	//res.sendfile(path.resolve('./files/practice.html'));
 	//res.sendfile(path.resolve('./files/test_client.html'));
+	res.render('layout', {});
 };
 
 routes.bootstrap = function(req, res){
