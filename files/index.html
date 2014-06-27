@@ -62,7 +62,7 @@
 			}
 		</style>
   	<script type="text/javascript">
-  	var serverURL="http://127.0.0.1:8080/hyAPPServer/";
+  	var serverURL="http://127.0.0.1:8081/hyAPPServer/";
   	
   	
   	$(document).ready(function() {
@@ -335,11 +335,19 @@
 	    	{
 	    		wallImg="img/view/table.png";
 	    	}
+	    	
+	    	//thName
+	    	var tableTHName="";
+	    	$.each(value.fields, function (index_f, value_f) {
+	    		//alert(value_dvt._id);
+	    		tableTHName+=value_f.name+",";
+	    	});
+	    	tableTHName=tableTHName.substring(0, tableTHName.length-1);
 	    	//var wall_html="<div class='brick'><a href='"+getDataURL+"' data-toggle='modal' data-target='#"+_id+"'><img src='"+wallImg+"' width='100%'><div class='info'>";
 	    	var wall_html="<div class='brick'><a href='#' data-toggle='modal' data-target='#"+_id+"'><img src='"+wallImg+"' width='100%'><div class='info'>";
 	    	wall_html=wall_html+"<h3>"+name+"</h3>";
 	    	wall_html=wall_html+"<h5>更新頻率："+frequency+"/次</h5><br/>提供機關："+department+"</h5>";
-	    	wall_html=wall_html+"<br/><br/><div id='infoStorage' attr1='"+action+"' attr2='"+value.defaultViewType._id+"' ></div><div class='read-more'>觀看詳細資料...</div></div></a></div>";
+	    	wall_html=wall_html+"<br/><br/><div id='infoStorage' attr1='"+action+"' attr2='"+value.defaultViewType._id+"' attrTableTHName='"+ tableTHName +"' ></div><div class='read-more'>觀看詳細資料...</div></div></a></div>";
 	    	
 	    	
 	    	$("#freewall").append(wall_html);
