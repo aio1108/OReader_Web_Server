@@ -90,12 +90,31 @@
  			e.preventDefault();
  			 var triggerA=$(this);
  			 var appendTarget=$(triggerA).attr('data-target');
+ 			 var defaultViewType = $(triggerA).find('#infoStorage').attr('attr2');
  			 if($.trim($(appendTarget).find('.modal-body').html())=="")
  			 {
-				//extractDispatch(triggerA);
+				extractDispatch(triggerA);
 				//parsing_agricultural_trade(triggerA,"agricultural_trade.xml")
 				//parsing_stock_publish(triggerA,"stock_publish.xml");
-				parsing_air_pollution(triggerA,"air_pollution.xml");
+				//parsing_air_pollution(triggerA,"air_pollution.xml");
+ 			 }
+ 			 else
+ 			 {
+ 				/*
+ 			 	alert(defaultViewType);
+ 				if(defaultViewType=="chart")
+ 				{
+ 					$(appendTarget).find('a[name=chartChange]').click();
+ 				}
+ 				else if(defaultViewType=="map")
+ 				{
+ 					$(appendTarget).find('a[name=mapChange]').click();
+ 				}
+ 				else if(defaultViewType=="table")
+ 				{
+ 					$(appendTarget).find('a[name=tableChange]').click();
+ 				}
+ 				*/
  			 }
  			
  		});
@@ -104,6 +123,9 @@
  		
  		//取得收藏
  		var mail_id="weichen@hyweb.com.tw";
+ 		mail_id="TCA@test.com.tw";
+ 		mail_id="sunnywu@hyweb.com.tw";
+ 		//TCA@test.com.tw
  		var favoriteURL=serverURL+"userDS?id="+mail_id;//pretend 登入成功 預先取得 收藏內容呈現再freeWall
  		
  		$.getJSON(favoriteURL, function(data){
@@ -176,17 +198,17 @@
 		$(document).on( "click", "a[name=mapChange]", function() {
 			var parentModal=$(this).parents('.modal-body:first');
 			$(parentModal).find('div[id*=ViewContainer]').hide();
-			$('#mapViewContainer').show('slow');
+			$(parentModal).find('#mapViewContainer').show('slow');
 		});
 		$(document).on( "click", "a[name=tableChange]", function() {
 			var parentModal=$(this).parents('.modal-body:first');
 			$(parentModal).find('div[id*=ViewContainer]').hide();
-			$('#tableViewContainer').show('slow');
+			$(parentModal).find('#tableViewContainer').show('slow');
 		});
 		$(document).on( "click", "a[name=chartChange]", function() {
 			var parentModal=$(this).parents('.modal-body:first');
 			$(parentModal).find('div[id*=ViewContainer]').hide();
-			$('#chartViewContainer').show('slow');
+			$(parentModal).find('#chartViewContainer').show('slow');
 		});
 	
 		
@@ -301,7 +323,7 @@
 	    	//});
 	    	
 	    	//準備freewall
-	    	if(value.defaultViewType._id=="chart")
+	    	if(value.defaultViewType._id=="chart"||value.defaultViewType._id=="bar_chart")
 	    	{
 	    		wallImg="img/view/chart.png";
 	    	}

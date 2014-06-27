@@ -149,15 +149,15 @@ function parsing_business_indicator(target,action)
 		
 		if(defaultViewType=="chart")
 		{
-			$('a[name=chartChange]').click();
+			$(appendTarget).find('a[name=chartChange]').click();
 		}
 		else if(defaultViewType=="map")
 		{
-			$('a[name=mapChange]').click();
+			$(appendTarget).find('a[name=mapChange]').click();
 		}
 		else if(defaultViewType=="table")
 		{
-			$('a[name=tableChange]').click();
+			$(appendTarget).find('a[name=tableChange]').click();
 		}
 	});
 }
@@ -209,15 +209,15 @@ function parsing_agricultural_trade(target,action)
 		
 		if(defaultViewType=="chart")
 		{
-			$('a[name=chartChange]').click();
+			$(appendTarget).find('a[name=chartChange]').click();
 		}
 		else if(defaultViewType=="map")
 		{
-			$('a[name=mapChange]').click();
+			$(appendTarget).find('a[name=mapChange]').click();
 		}
 		else if(defaultViewType=="table")
 		{
-			$('a[name=tableChange]').click();
+			$(appendTarget).find('a[name=tableChange]').click();
 		}
 
 	});
@@ -278,15 +278,15 @@ function parsing_stock_publish(target,action)
 		
 		if(defaultViewType=="chart")
 		{
-			$('a[name=chartChange]').click();
+			$(appendTarget).find('a[name=chartChange]').click();
 		}
 		else if(defaultViewType=="map")
 		{
-			$('a[name=mapChange]').click();
+			$(appendTarget).find('a[name=mapChange]').click();
 		}
 		else if(defaultViewType=="table")
 		{
-			$('a[name=tableChange]').click();
+			$(appendTarget).find('a[name=tableChange]').click();
 		}
 
 	});
@@ -346,15 +346,15 @@ function parsing_air_pollution(target,action)
 		
 		if(defaultViewType=="chart")
 		{
-			$('a[name=chartChange]').click();
+			$(appendTarget).find('a[name=chartChange]').click();
 		}
 		else if(defaultViewType=="map")
 		{
-			$('a[name=mapChange]').click();
+			$(appendTarget).find('a[name=mapChange]').click();
 		}
 		else if(defaultViewType=="table")
 		{
-			$('a[name=tableChange]').click();
+			$(appendTarget).find('a[name=tableChange]').click();
 		}
 
 	});
