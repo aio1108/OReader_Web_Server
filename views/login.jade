@@ -5,11 +5,11 @@ div#loginBlock.modal.fade(tabindex='-2', role='dialog', aria-labelledby='loginBl
 				button.close(type='button', data-dismiss='modal' aria-hidden='true') &times;
 				h4#myModalLabel.modal-title 使用者
 			div.modal-body
-				form(role='form')
+				form(role='form', action='login', method='post')
 					div.form-group
 						label(for='userid') 帳號
-						input#userid.form-control(type='email', placeholder='輸入帳號...')
+						input#userid.form-control(type='email', name='userid', placeholder='輸入帳號...')
 					div.form-group
 						label(for='userpwd') 密碼
-						input#userpwd.form-control(type='password', placeholder='輸入密碼...')
+						input#userpwd.form-control(type='password', name='userpwd', placeholder='輸入密碼...')
 					button.btn.btn-primary(type='submit') 登入

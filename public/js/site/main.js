@@ -14,7 +14,7 @@ var serverURL="http://127.0.0.1:8080/hyAPPServer/";
 		  document.querySelector('head').appendChild(msViewportStyle)
 	}
 	
-		
+		/*
 		$.getJSON(serverURL+"categoryDS", function(data){
 			$('#category').append("<option value='-1'>請選擇</option>");
 		    $.each(data, function (index, value) {
@@ -23,6 +23,8 @@ var serverURL="http://127.0.0.1:8080/hyAPPServer/";
 	 		    //alert(value.name);
 		    });
 		});
+		*/
+		
 		$(document).on("click", "a[data-toggle=modal]", function(e) {
 		//$('a[data-toggle=modal]').click(function(e) {
 			e.preventDefault();

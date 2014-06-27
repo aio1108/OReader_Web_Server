@@ -2,19 +2,22 @@ div#searchBlock.collapse
 	div.container
 		form.form-horizontal
 			fieldset
-				legend Form Name
+				legend 搜尋
 				div.control-group
-					label.control-label(for='category') category
+					label.control-label(for='category') 類別
 					div.controls
 						select#category.input-xlarge(name='category')
+							option(value='-1') 請選擇
+							- for (var i = 0;i < categories.length;i++)
+								option(value='#{categories[i]._id}') #{categories[i].name}
 				div.control-group
-					label.control-label(for='data_description') data_description
+					label.control-label(for='data_description') 關鍵字
 					div.controls
-						input#data_description.input-xlarge(name='data_description', type='text', placeholder='')
+						input#data_description.input-xlarge(name='data_description', type='text', placeholder='輸入關鍵字...')
 						p.help-block help
 				input#btnSearch(type='button', value='搜尋')
 				div.control-group
 					label.control-label(for='holder') 資料提供機關
 					div.controls
-						input#holder.input-xlarge(name='holder', type='text', placeholder='')
+						input#holder.input-xlarge(name='holder', type='text', placeholder='輸入機關名稱...')
 						p.help-block help
