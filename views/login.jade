@@ -3,7 +3,7 @@ div#loginBlock.modal.fade(tabindex='-2', role='dialog', aria-labelledby='loginBl
 		div.modal-content
 			div.modal-header
 				button.close(type='button', data-dismiss='modal' aria-hidden='true') &times;
-				h4#myModalLabel.modal-title 使用者
+				h4#myModalLabel.modal-title 登入
 			div.modal-body
 				form(role='form', action='login', method='post')
 					div.form-group
@@ -12,4 +12,4 @@ div#loginBlock.modal.fade(tabindex='-2', role='dialog', aria-labelledby='loginBl
 					div.form-group
 						label(for='userpwd') 密碼
 						input#userpwd.form-control(type='password', name='userpwd', placeholder='輸入密碼...')
-					button.btn.btn-primary(type='submit') 登入
+					button.btn.btn-primary(type='submit') 送出
