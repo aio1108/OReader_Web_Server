@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Starter Template for Bootstrap</title>
+    <title>O-Reader</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -38,6 +38,9 @@
 	<script src="js/bootbox.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<script type="text/javascript" src="js/highcharts.js"></script>
+	<script src="http://code.highcharts.com/maps/modules/map.js"></script>
+    <script src="http://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="js/highchartsMaps/tw-all.js"></script>
 	<script type="text/javascript" src="js/useful/extractJSONData.js"></script>
 
 		<style type="text/css">
@@ -60,6 +63,11 @@
 				padding: 0px;
 				display: block;
 			}
+			.loading {
+                margin-top: 10em;
+                text-align: center;
+                color: gray;
+            }
 		</style>
   	<script type="text/javascript">
   	var serverURL="http://127.0.0.1:8081/hyAPPServer/";
@@ -166,6 +174,11 @@
  		//搜尋
 		$(document).on("click", "#btnSearch", function() {
 			//alert("搜尋");
+			
+			//loading gif
+			
+			$("#freewall").append("<div id='searchAjaxLoad' align='middle'><img src='../img/gif-load.gif' alt='ajaxLoad'></div>");
+			
 			var searchURL=serverURL+"metaDS?";
 			var searchParam="";
 			if($("#data_description").val()!="")
@@ -183,6 +196,8 @@
 	 		    $.each(data, function (index, value) {
 	 		    	fillWall(index,value);
 	 		    });
+	 		   setTimeout("$(window).resize();", 500);
+	 		   
 	 		});
 			
 			$("#searchBlock").attr("class","collapse");//關閉
@@ -310,7 +325,6 @@
 	    	var wallImg="";
 	    	var action=value.action;//ex: business_indicator.xml
 	    	var getDataURL=serverURL+"hyAppDS?_action="+action;
-	    	setTimeout("$(window).resize();", 100);
 	    	
 	    	//準備freewall內容
 	    	//$('body').append("<div class='modal fade' id='"+_id+"' tabindex='0' role='dialog' aria-labelledby='loginBlockLabel' aria-hidden='true'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel'>"+name+"</h4></div><div class='modal-body'><table id='example2' class='display' cellspacing='0' width='100%'><thead><tr><th>th1</th><th>th2</th><th>th3</th></thead><tbody><tr><td>td1</td><td>td2</td><td>td3</td></tr><tr><td>td4</td><td>td5</td><td>td6</td></tr><tr><td>td7</td><td>td8</td><td>td9</td></tr></tbody></table></div></div></div></div>")
@@ -360,6 +374,7 @@
 	    		//alert(value_dvt._id);
 	    		//alert(value_dvt.name);
 	    	});
+	    	$('#searchAjaxLoad').remove();
  	}
 	</script>
 	

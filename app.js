@@ -47,7 +47,7 @@ app.get('/logout', router.routes.logout);
 
 app.get('/test/client', router.routes.io_test);
 
-app.get('/bootstrap', router.routes.bootstrap);
+app.get('/demo', router.routes.bootstrap);
 
 app.get('/bootstrap2', router.routes.bootstrap2);
 
