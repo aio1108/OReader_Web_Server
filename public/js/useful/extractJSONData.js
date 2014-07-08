@@ -37,17 +37,42 @@ function extractDispatch(target)
 	{
 		parsing_health_food(target,action);
 	}
-
+	else if(action=="ultra_violet.xml")
+	{
+		parsing_ultra_violet(target,action);
+	}
 }
 
 function afterLoadingResult (target)
 {
 	var appendTarget=$(target).attr('data-target');
 	var defaultViewType = $(target).find('#infoStorage').attr('attr2');
+	var viewTypeStr = $(target).find('#infoStorage').attr('attr3');
 	
 	
 	//functionBar
-	$(appendTarget).find('.modal-body').append("<div style='background:#000;' id='function_Bar'><span>檢視：<a name='tableChange'>表格</a> ｜ <a name='chartChange'>圖</a> ｜ <a name='mapChange'>地圖</a></span>&#12288;&#12288;<span>資料格式：<a href=''>JSON</a> ｜ <a href=''>XML</a> ｜ <a href=''>CSV</a></span>&#12288;&#12288;<span>分享：<a href=''>Facebook</a> ｜ <a href=''>Google+</a> ｜ <a href=''>Plurk</a> ｜ <a href=''>Twitter</a></span>&#12288;&#12288;<span><a href=''>最愛</a></span></div>");
+	//$(appendTarget).find('.modal-body').append("<div style='background:#000;' id='function_Bar'><span>檢視：<a name='tableChange'>表格</a> ｜ <a name='chartChange'>圖</a> ｜ <a name='mapChange'>地圖</a></span>&#12288;&#12288;<span>資料格式：<a href=''>JSON</a> ｜ <a href=''>XML</a> ｜ <a href=''>CSV</a></span>&#12288;&#12288;<span>分享：<a href=''>Facebook</a> ｜ <a href=''>Google+</a> ｜ <a href=''>Plurk</a> ｜ <a href=''>Twitter</a></span>&#12288;&#12288;<span><a href=''>最愛</a></span></div>");
+	$(appendTarget).find('.modal-body').append("<div id='function_Bar' >檢視:<a id='icon_view_table' alt='表格' name='tableChange' class='noViewSepia' ></a><a id='icon_view_chart' alt='圖' name='chartChange' class='noViewSepia' ></a><a id='icon_view_map' alt='地圖' name='mapChange' class='noViewSepia'></a>資料格式:<a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a>分享:<a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a>最愛:<a id='icon_favorite' alt='最愛'></a></div>");
+	
+	//將非顯示樣式的圖示反灰
+	var viewTypeArray=viewTypeStr.split(",");
+	
+	for(var i=0;i<viewTypeArray.length;i++)
+	{
+		if(viewTypeArray[i]=="table")
+		{
+			$(appendTarget).find('a[name=tableChange]').removeClass("noViewSepia");
+		}
+		if(viewTypeArray[i]=="line_chart"||viewTypeArray[i]=="bar_chart")
+		{
+			$(appendTarget).find('a[name=chartChange]').removeClass("noViewSepia");
+		}
+		else if(viewTypeArray[i]=="map")
+		{
+			$(appendTarget).find('a[name=mapChange]').removeClass("noViewSepia");
+		}
+		
+	}
 	
 	//移除gif
 	$(appendTarget).find('.modal-body').find('#imgAjaxLoad').remove();
@@ -298,7 +323,6 @@ function parsing_stock_publish(target,action)
 		//太寬 調整CSS
 		
 		$(appendTarget).find('#tableViewContainer').css({
-			width:'950',
             height:'auto', 
             'overflow-y': 'auto',
            'max-height':'100%'});
@@ -1002,6 +1026,62 @@ function parsing_health_food(target,action)
 	});
 
 }
+function parsing_ultra_violet(target,action)
+{
+	//alert($(triggerA).attr('data-target'));
+	 var triggerA=$(target);
+	 var appendTarget=$(target).attr('data-target');
+	 var tableTHName = $(target).find('#infoStorage').attr('attrTableTHName');
+	 var thName=tableTHName.split(',');
+	 var getDataURL=serverURL+"hyAppDS?_action="+action;
+	 var modal_id = $(triggerA).attr('data-target');
+	 modal_id=modal_id.substring(1, modal_id.length);
+	 //alert(modal_id);
+	 $.get(getDataURL, function(data) {
+		// 表格
+		 var th_html="";
+		 var names=[];
+		 
+		 for ( var o in thName ) {
+			 th_html=th_html+"<th>"+thName[o]+"</th>";
+		 }
+		 for ( var o in data.records[0] ) {
+			 names.push(o); // the property name
+		 }
+		 var appendStr="";
+		 appendStr=appendStr+"<table id='"+modal_id+"' class='display' cellspacing='0' width='100%'><thead><tr>"+th_html+"</thead><tbody>";
+		 $.each(data.records, function (index, value) {
+			 var td_html="";
+			 for (var i=0;i<names.length;i++) {
+				 td_html=td_html+"<td>"+value[names[i]]+"</td>";
+			 }
+	    	 //appendStr=appendStr+"<tr><td>"+value[names[0]]+"</td><td>"+value[names[1]]+"</td><td>"+value[names[2]]+"</td><td>"+value[names[3]]+"</td><td>"+value[names[4]]+"</td><td>"+value[names[5]]+"</td><td>"+value[names[6]]+"</td><td>"+value[names[6]]+"</td><td>"+value[names[7]]+"</td><td>"+value[names[8]]+"</td></tr>";
+			 appendStr=appendStr+"<tr>"+td_html+"</tr>";
+	     });
+		appendStr=appendStr+"</tbody></table>"; 
+		$('body').append(appendStr);
+		
+		$('body table').last().dataTable({
+		     "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+		});
+		$(appendTarget).find('.modal-body').append("<div id='tableViewContainer' ></div>");
+		$(appendTarget).find('.modal-body').find('#tableViewContainer').append($("#"+modal_id+"_wrapper"));
+	
+		
+		//太寬 調整CSS
+		
+		$(appendTarget).find('.modal-dialog').css({
+			width:'auto',
+            height:'auto', 
+         //   'overflow-y': 'auto',
+           'max-height':'100%'});
+		
+		afterLoadingResult(target);
+	});
+
+}
+
+
 function formatFloat(num, pos)
 {
   var size = Math.pow(10, pos);
