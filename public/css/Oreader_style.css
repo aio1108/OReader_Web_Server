@@ -1,7 +1,27 @@
+/*搜尋區塊*/
 #searchBlock{
-	width:100%; background:#000; color:#FFF;
-	
+	width:100%;
+	background:#000;
+	padding-bottom:20px;
 }
+#searchBlock label{
+	color:#FFF;
+}
+#searchBlock fieldset{
+	padding: 10px;
+}
+#searchBlock div.control-group{
+	float:left;
+	margin: 10px;
+}
+#searchBlock #btnSearch{
+	float:left;
+	display: block;
+	margin: 10px;
+	clear:both;
+}
+#data_description{}
+
 
 /*資料輪播View箭頭設定*/
 .carousel-control {
@@ -22,7 +42,7 @@ body {
 		padding-top:64px;
 	}
 .free-wall {
-	margin: 15px;
+	margin: 15px 10px 70px 10px;
 }
 .brick {
 	width: 221.2px;
@@ -44,6 +64,25 @@ a{
 	text-decoration:none;
 }
 /*FOOTER文字*/
+div#footer{
+		background-color: #222;
+		border-color: #080808;
+		bottom: 0;
+		margin-bottom: 0;
+		border-width: 1px 0 0;
+		position: fixed;
+		right: 0;
+		left: 0;
+		z-index: 1030;
+		min-height: 50px;
+		border: 1px solid transparent;
+		text-align:center;
+		font-size:12px;
+		padding:5px;
+		margin:5px;
+		color:#FFF;
+		margin:0px;
+}
 #footer div{
 	text-align:center;
 	font-size:12px;
@@ -60,10 +99,81 @@ a{
 	height:15px;
 	width:150px;
 }
+/*BODY*/
+body{
+	background-image: url(../img/bg.png);
+	background-position: right top;
+	background-repeat: repeat-x;
+	background-color:#558822;
+	background-attachment:fixed;
+}
+/*HEADER*/
+#header-block {
+	background-image: url(../img/headerbg.png);
+	background-position: center top;
+	/%background-size: contain;%/
+	background-color:#558822;
+	background-attachment:fixed;
+}
+.navbar-header{
+	height:65px;
+}
+.navbar-collapse{
+	/*background-color:#558822;*/
+}
+.modal-header{
+	background-color:#CC5522;
+	color:#FFFFFF;
+}
+#searchButton, #userLogInButtom{
+	display:inline-block;
+	width: 50px;
+	height:50px;
+	margin:10px 5px 5px 5px;
+	float:right;
+}
+#searchButton{
+	background: url("../img/OReader_icon_search.png") no-repeat center center;
+}
+#userLogInButtom{
+	background: url("../img/OReader_icon_user.png") no-repeat center center;
+}
+
+#content_block{
+	padding: 15px 0 15px 0;
+}
+
+#content_block table{
+	word-wrap:break-word;
+	word-break:break-all;
+}
+
 /*Dialog設定*/
 @media (min-width: 768px){
 	.modal-dialog {
-		width: 984px;
+		width: 600px;
 		margin: 30px auto;
 	}
 }
+@media (min-width: 992px) {
+	.modal-dialog  {
+		width: 900px;
+	}
+}
+#function_Bar{background:#000; color:#FFFFFF;  line-height:48px;  vertical-align:top; padding:0 10px;}
+#icon_data_csv{display:inline-block;  width:48px; height:48px; background: url("../img/icon_data_csv.png") no-repeat center center;}
+#icon_data_json{display:inline-block; width:69px; height:48px; background: url("../img/icon_data_json.png") no-repeat center center;}
+#icon_data_xml{display:inline-block; width:48px; height:48px; background: url("../img/icon_data_xml.png") no-repeat center center;}
+#icon_favorite{display:inline-block; width:48px; height:48px; background: url("../img/icon_favorite.png") no-repeat center center;}
+#icon_social_facebook{display:inline-block; width:48px; height:48px; background: url("../img/icon_social_facebook.png") no-repeat center center;}
+#icon_social_google{display:inline-block; width:48px; height:48px; background: url("../img/icon_social_google.png") no-repeat center center;}
+#icon_social_plurk{display:inline-block; width:48px; height:48px; background: url("../img/icon_social_plurk.png") no-repeat center center;}
+#icon_social_twitter{display:inline-block; width:48px; height:48px; background: url("../img/icon_social_twitter.png") no-repeat center center;}
+#icon_view_chart{display:inline-block; width:48px; height:48px; background: url("../img/icon_view_chart.png") no-repeat center center;}
+#icon_view_chart2{display:inline-block; width:48px; height:48px; background: url("../img/icon_view_chart2.png") no-repeat center center;}
+#icon_view_map{display:inline-block; width:48px; height:48px; background: url("../img/icon_view_map.png") no-repeat center center;}
+#icon_view_table{display:inline-block; width:48px; height:48px; background: url("../img/icon_view_table.png") no-repeat center center;}
+
+.noViewSepia{
+      -webkit-filter:sepia(1);
+	}
