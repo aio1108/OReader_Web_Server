@@ -41,6 +41,10 @@ function extractDispatch(target)
 	{
 		parsing_ultra_violet(target,action);
 	}
+	else if(action=="drama_info.xml")
+	{
+		parsing_drama_info(target,action);
+	}
 }
 
 function afterLoadingResult (target)
@@ -49,10 +53,11 @@ function afterLoadingResult (target)
 	var defaultViewType = $(target).find('#infoStorage').attr('attr2');
 	var viewTypeStr = $(target).find('#infoStorage').attr('attr3');
 	
-	
 	//functionBar
 	//$(appendTarget).find('.modal-body').append("<div style='background:#000;' id='function_Bar'><span>檢視：<a name='tableChange'>表格</a> ｜ <a name='chartChange'>圖</a> ｜ <a name='mapChange'>地圖</a></span>&#12288;&#12288;<span>資料格式：<a href=''>JSON</a> ｜ <a href=''>XML</a> ｜ <a href=''>CSV</a></span>&#12288;&#12288;<span>分享：<a href=''>Facebook</a> ｜ <a href=''>Google+</a> ｜ <a href=''>Plurk</a> ｜ <a href=''>Twitter</a></span>&#12288;&#12288;<span><a href=''>最愛</a></span></div>");
-	$(appendTarget).find('.modal-body').append("<div id='function_Bar' >檢視:<a id='icon_view_table' alt='表格' name='tableChange' class='noViewSepia' ></a><a id='icon_view_chart' alt='圖' name='chartChange' class='noViewSepia' ></a><a id='icon_view_map' alt='地圖' name='mapChange' class='noViewSepia'></a>資料格式:<a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a>分享:<a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a>最愛:<a id='icon_favorite' alt='最愛'></a></div>");
+	//$(appendTarget).find('.modal-body').append("<div id='function_Bar' >檢視:<a id='icon_view_table' alt='表格' name='tableChange' class='noViewSepia' ></a><a id='icon_view_chart' alt='圖' name='chartChange' class='noViewSepia' ></a><a id='icon_view_map' alt='地圖' name='mapChange' class='noViewSepia'></a>資料格式:<a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a>分享:<a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a>最愛:<a id='icon_favorite' alt='最愛'></a></div>");
+	$(appendTarget).find('.modal-body').append("<div id='function_Bar' >檢視:<a id='icon_view_table_g' alt='表格' name='tableChange' ></a><a id='icon_view_chart_g' alt='圖' name='chartChange' ></a><a id='icon_view_map_g' alt='地圖' name='mapChange' ></a>資料格式:<a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a>分享:<a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a>最愛:<a id='icon_favorite' alt='最愛'></a></div>");
+	
 	
 	//將非顯示樣式的圖示反灰
 	var viewTypeArray=viewTypeStr.split(",");
@@ -61,15 +66,18 @@ function afterLoadingResult (target)
 	{
 		if(viewTypeArray[i]=="table")
 		{
-			$(appendTarget).find('a[name=tableChange]').removeClass("noViewSepia");
+			//$(appendTarget).find('a[name=tableChange]').removeClass("noViewSepia");
+			$(appendTarget).find('a[name=tableChange]').attr("id",'icon_view_table');
 		}
-		if(viewTypeArray[i]=="line_chart"||viewTypeArray[i]=="bar_chart")
+		else if(viewTypeArray[i]=="line_chart"||viewTypeArray[i]=="bar_chart"||viewTypeArray[i]=="map_chart")
 		{
-			$(appendTarget).find('a[name=chartChange]').removeClass("noViewSepia");
+			//$(appendTarget).find('a[name=chartChange]').removeClass("noViewSepia");
+			$(appendTarget).find('a[name=chartChange]').attr("id",'icon_view_chart');
 		}
 		else if(viewTypeArray[i]=="map")
 		{
-			$(appendTarget).find('a[name=mapChange]').removeClass("noViewSepia");
+			//$(appendTarget).find('a[name=mapChange]').removeClass("noViewSepia");
+			$(appendTarget).find('a[name=mapChange]').attr("id",'icon_view_map');
 		}
 		
 	}
@@ -78,18 +86,35 @@ function afterLoadingResult (target)
 	$(appendTarget).find('.modal-body').find('#imgAjaxLoad').remove();
 	
 	//切換defaultViewType
-	if(defaultViewType=="chart"||defaultViewType=="bar_chart")
+	if(defaultViewType=="line_chart"||defaultViewType=="bar_chart"||defaultViewType=="map_chart")
 	{
-		$(appendTarget).find('a[name=chartChange]').click();
+		$(appendTarget).find('a[id=icon_view_chart]').click();
 	}
 	else if(defaultViewType=="map")
 	{
-		$(appendTarget).find('a[name=mapChange]').click();
+		$(appendTarget).find('a[id=icon_view_map]').click();
+		$(appendTarget).find('.modal-body').find('#function_Bar').before($(appendTarget).find('#mapViewContainer'));
+		$(appendTarget).find('.modal-body').find('#mapViewContainer').show();
 	}
 	else if(defaultViewType=="table")
 	{
-		$(appendTarget).find('a[name=tableChange]').click();
+		$(appendTarget).find('a[id=icon_view_table]').click();
 	}
+	
+	//訂閱過反灰
+	//alert(appendTarget.substr(1,appendTarget.length));
+	var compareStr=appendTarget.substr(1,appendTarget.length);
+	
+	 for (var i=0;i<metaDataAId.length;i++) {
+		if(compareStr==metaDataAId[i])//bingo gray
+		{
+			//alert("bingo");
+			$('#icon_favorite',appendTarget).attr("id","icon_favorite_g");
+			$(target).find('#infoStorage').attr('attr4',subscribesId[i]);
+		}
+	 }
+	
+	
 }
 
 
@@ -331,6 +356,10 @@ function parsing_stock_publish(target,action)
 	});
 
 }
+var serverURL="http://127.0.0.1:8081/hyAPPServer/";
+var validateURL=serverURL+"metaDS?&category=validate";
+var checkUserId="opendatanews1@gmail.com";
+var checkPassword="58efea";
 function parsing_air_pollution(target,action)
 {
 	//alert($(triggerA).attr('data-target'));
@@ -931,7 +960,8 @@ function parsing_gdp_quarter_indicator(target,action)
 	                        fontSize: '10px',
 	                        fontFamily: 'Verdana, sans-serif'
 	                    }
-	                }
+	                },
+	                tickInterval:4
 	            },
 	            yAxis: {
 	                min: 0,
@@ -1076,11 +1106,123 @@ function parsing_ultra_violet(target,action)
          //   'overflow-y': 'auto',
            'max-height':'100%'});
 		
+		
 		afterLoadingResult(target);
 	});
 
 }
+function parsing_drama_info(target,action)
+{
+	//alert($(triggerA).attr('data-target'));
+	 var triggerA=$(target);
+	 var appendTarget=$(target).attr('data-target');
+	 var tableTHName = $(target).find('#infoStorage').attr('attrTableTHName');
+	 var thName=tableTHName.split(',');
+	 var getDataURL=serverURL+"hyAppDS?_action="+action;
+	 var modal_id = $(triggerA).attr('data-target');
+	 modal_id=modal_id.substring(1, modal_id.length);
+	 //alert(modal_id);
+	 $.get(getDataURL, function(data) {
+		// 表格
+		 
+		 var th_html="";
+		 var names=[];
+		 
+		 for ( var o in thName ) {
+			 th_html=th_html+"<th>"+thName[o]+"</th>";
+		 }
+		 for ( var o in data.records[0] ) {
+			 names.push(o); // the property name
+		 }
+		 var appendStr="";
+		 appendStr=appendStr+"<table id='"+modal_id+"' class='display' cellspacing='0' width='100%'><thead><tr>"+th_html+"</thead><tbody>";
+		 $.each(data.records, function (index, value) {
+			 var td_html="";
+			 for (var i=0;i<names.length;i++) {
+				 td_html=td_html+"<td>"+value[names[i]]+"</td>";
+			 }
+	    	 //appendStr=appendStr+"<tr><td>"+value[names[0]]+"</td><td>"+value[names[1]]+"</td><td>"+value[names[2]]+"</td><td>"+value[names[3]]+"</td><td>"+value[names[4]]+"</td><td>"+value[names[5]]+"</td><td>"+value[names[6]]+"</td><td>"+value[names[6]]+"</td><td>"+value[names[7]]+"</td><td>"+value[names[8]]+"</td></tr>";
+			 appendStr=appendStr+"<tr>"+td_html+"</tr>";
+	     });
+		appendStr=appendStr+"</tbody></table>"; 
+		$('body').append(appendStr);
+		
+		$('body table').last().dataTable({
+		     "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+		});
+		$(appendTarget).find('.modal-body').append("<div id='tableViewContainer' ></div>");
+		$(appendTarget).find('.modal-body').find('#tableViewContainer').append($("#"+modal_id+"_wrapper"));
+	
+		
+		//太寬 調整CSS
+		
+		$(appendTarget).find('.modal-dialog').css({
+			width:'auto',
+            height:'auto', 
+         //   'overflow-y': 'auto',
+           'max-height':'100%'});
+		
+		
+		
+		//map
+		
+		$(appendTarget).append("<div id='mapViewContainer' style='height: 666px; width:auto;display:none;'></div>");
 
+		var latlng = new google.maps.LatLng(lat,lng);  //台灣座標
+			var myOptions = {
+			    zoom: 10,    //地圖縮放比例，數字越大，路越大
+			    center: latlng,  //地圖的中心座標
+			    mapTypeId: google.maps.MapTypeId.ROADMAP  //地圖型態，可參考 這裡
+			};
+		
+		map = new google.maps.Map(document.getElementById("mapViewContainer"), myOptions);
+		
+		 $.each(data.records, function (index, value) {
+			 if(value.latitude!=null)
+			 {
+				 
+				 var myLatlng = new google.maps.LatLng(value.latitude,value.longitude); 
+					
+					
+					
+				var marker = new google.maps.Marker({
+				    position: myLatlng,    //Marker的座標
+				    map: map,    //map物件，以這篇文章的例子，就是上面那個map物件
+				    title: value.location    //當滑鼠移至Marker上時，要顯示的Title文字
+				});
+				
+				//3. 在Marker click時，顯示InfoWindow
+				
+				google.maps.event.addListener(marker, 'click', function() {
+				    infowindow.open(map, marker);
+				});	
+				
+				//4. 新增InfoWindow
+				var infowindow = new google.maps.InfoWindow();    //初始一個物件
+				var htmlContent="<div>活動名稱:"+value.title+"</div>";
+				htmlContent+="<div>時間開始時間:"+value.time+"</div>";
+				if(value.endtime!=null)
+				{
+					htmlContent+="<div>活動截止時間:"+value.endtime+"</div>";
+				}
+				htmlContent+="<div>地點:"+value.location+"</div>";
+				htmlContent+="<div>地點名稱:"+value.locationName+"</div>";
+				htmlContent+="<div>是否售票:"+value.onSales+"</div>";
+				htmlContent+="<div>票價:"+value.price+"</div>";
+				infowindow.setContent(htmlContent);    //InfoWindow的內容，可用Html語法
+				infowindow.setPosition(myLatlng);    //座標
+				 
+				 
+				 
+			 }
+	     });
+	
+		
+		afterLoadingResult(target);
+
+	});
+
+}
 
 function formatFloat(num, pos)
 {
