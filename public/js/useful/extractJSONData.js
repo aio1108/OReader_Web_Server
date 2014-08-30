@@ -56,7 +56,7 @@ function afterLoadingResult (target)
 	//functionBar
 	//$(appendTarget).find('.modal-body').append("<div style='background:#000;' id='function_Bar'><span>檢視：<a name='tableChange'>表格</a> ｜ <a name='chartChange'>圖</a> ｜ <a name='mapChange'>地圖</a></span>&#12288;&#12288;<span>資料格式：<a href=''>JSON</a> ｜ <a href=''>XML</a> ｜ <a href=''>CSV</a></span>&#12288;&#12288;<span>分享：<a href=''>Facebook</a> ｜ <a href=''>Google+</a> ｜ <a href=''>Plurk</a> ｜ <a href=''>Twitter</a></span>&#12288;&#12288;<span><a href=''>最愛</a></span></div>");
 	//$(appendTarget).find('.modal-body').append("<div id='function_Bar' >檢視:<a id='icon_view_table' alt='表格' name='tableChange' class='noViewSepia' ></a><a id='icon_view_chart' alt='圖' name='chartChange' class='noViewSepia' ></a><a id='icon_view_map' alt='地圖' name='mapChange' class='noViewSepia'></a>資料格式:<a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a>分享:<a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a>最愛:<a id='icon_favorite' alt='最愛'></a></div>");
-	$(appendTarget).find('.modal-body').append("<div id='function_Bar' >檢視:<a id='icon_view_table_g' alt='表格' name='tableChange' ></a><a id='icon_view_chart_g' alt='圖' name='chartChange' ></a><a id='icon_view_map_g' alt='地圖' name='mapChange' ></a>資料格式:<a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a>分享:<a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a>最愛:<a id='icon_favorite' alt='最愛'></a></div>");
+	$(appendTarget).find('.modal-body').append("<div id='function_Bar' ><div id='icon_view'>檢視:</div><a id='icon_view_table_g' alt='表格' name='tableChange' ></a><a id='icon_view_chart_g' alt='圖' name='chartChange' ></a><a id='icon_view_map_g' alt='地圖' name='mapChange' ></a><div id='icon_data'>資料格式:</div><a id='icon_data_json' alt='JSON'></a><a id='icon_data_xml' alt='XML'></a><a id='icon_data_csv' alt='CSV'></a><div id='icon_social'>分享:</div><a id='icon_social_facebook' alt='Facebook'></a><a id='icon_social_google' alt='Google+'></a><a id='icon_social_plurk' alt='Plurk'></a><a id='icon_social_twitter' alt='Twitter'></a><div id='icon_fav'>最愛:</div><a id='icon_favorite' alt='最愛'></a></div>");
 	
 	
 	//將非顯示樣式的圖示反灰
@@ -252,7 +252,7 @@ function parsing_business_indicator(target,action)
 		
 		
 		afterLoadingResult(target);
-		
+
 	});
 }
 
@@ -1223,7 +1223,13 @@ function parsing_drama_info(target,action)
 	});
 
 }
-
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
 function formatFloat(num, pos)
 {
   var size = Math.pow(10, pos);

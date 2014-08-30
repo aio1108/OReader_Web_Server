@@ -19,3 +19,8 @@ body {
 	padding: 0px;
 	display: block;
 }
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}

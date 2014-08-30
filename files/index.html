@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
-<html lang="en">
+<html  xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:og="http://ogp.me/ns#" 
+xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
 	<!-- meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="本網站建立一防災儀錶板服務，整合了氣象、雨量、警戒、災情、崩塌、監控、淹水潛勢、土石流和水文水資源等資訊，提供民眾透過此服務快速掌握防災相關資訊。">
     <meta name="author" content="">
+    <meta name="og:description" content="本網站建立一防災儀錶板服務，整合了氣象、雨量、警戒、災情、崩塌、監控、淹水潛勢、土石流和水文水資源等資訊，提供民眾透過此服務快速掌握防災相關資訊。" />
+	<meta property="og:title" content="O-Reader"/>
+	<meta property="og:url" content="http://114.35.45.209:3000/"/>
+	<meta property="og:image" content="http://114.35.45.209:3000/img/OReader_logo.png"/>
+	<meta property="og:site_name" content="O-Reader" />
     <title>O-Reader</title>
 
     <!-- Bootstrap core CSS -->
@@ -41,7 +48,7 @@
 	<script src="http://code.highcharts.com/maps/modules/map.js"></script>
     <script src="http://code.highcharts.com/maps/modules/exporting.js"></script>
     <script src="http://code.highcharts.com/mapdata/countries/tw/tw-all.js"></script>
-    <script type="text/javascript"src="http://maps.google.com/maps/api/js?sensor=true" ></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true" ></script>
 	<script type="text/javascript" src="js/useful/extractJSONData.js"></script>
 
 		<style type="text/css">
@@ -166,8 +173,6 @@
 			
 	    });
  		
- 		//預先搜尋
- 		//$('#btnSearch').click();
 
 		var nua = navigator.userAgent
 		var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
@@ -210,28 +215,9 @@
 	 		$('#btnSearch').click();
 		});
 		//登入
-		$(document).on( "click", "button[name=userlogin]", function() {
-			$.getJSON(validateURL, function(data){
-				if($('#userid').val()!=checkUserId||$('#userpwd').val()!=checkPassword)
-				{
-					alert("無此帳號或密碼錯誤!");
-				}
-				else
-				{
-					alert("登入成功");
-					//無法在開啟
-					$('#userLogInButtom').attr("data-target","");
-					$("#loginBlock").modal('toggle');
-					loginSuccess= true;
-				}	
-				
-				if(loginSuccess)
-				{
-					loginSuccessEvent();
-				}
-	 		});
-
-			
+		$(document).on( "click", "input[name=userlogin]", function() {
+			setTimeout("validate();", 500);
+			//return;
 		});
 		$(document).on( "click", "#userLogInButtom", function() {
 			
@@ -329,6 +315,56 @@
 			
 		});
 		
+ 		//預先搜尋
+ 		//$('#btnSearch').click();
+		//預先搜尋
+		var key = getUrlVars()["key"];
+		if(key!=null&&key!="")
+		{
+			if(key.substring(key.length-1, key.length)=="#")
+			{
+				key=key.substring(0,key.length-1);
+			}
+			//alert();
+			$('#data_description').val(decodeURIComponent(key));
+			$('#btnSearch').click();	
+		}
+		
+		
+		//分享到facebook
+		$(document).on( "click", "#icon_social_facebook", function() {
+			var searchKey=$.trim($(this).parents('.modal-content:first').find('#myModalLabel').html());
+			var shareURL="http://"+location.host+"/demo?key="+searchKey;
+			//alert(shareURL);
+			//alert(location.href);
+			//http://127.0.0.1:8081/hyAPPServer/metaDS?&key=%E6%99%AF%E6%B0%A3%E6%8C%87%E6%A8%99
+			
+			window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(shareURL), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');	
+		});
+		//分享到plurk
+		$(document).on( "click", "#icon_social_plurk", function() {
+			var searchKey=$.trim($(this).parents('.modal-content:first').find('#myModalLabel').html());
+			var shareURL="http://"+location.host+"/demo?key="+searchKey+ " ("+searchKey+")";
+			//alert(shareURL);
+		
+			window.open('http://www.plurk.com/?qualifier=shares&status='+encodeURIComponent(shareURL));
+		});
+		//分享到Twitter
+		$(document).on( "click", "#icon_social_twitter", function() {
+			var searchKey=$.trim($(this).parents('.modal-content:first').find('#myModalLabel').html());
+			var shareURL=searchKey+" http://"+location.host+"/demo?key="+searchKey;
+			//alert(shareURL);
+		
+			window.open('http://twitter.com/home/?status='+encodeURIComponent(shareURL), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
+		});
+		//分享到google+
+		$(document).on( "click", "#icon_social_google", function() {
+			var searchKey=$.trim($(this).parents('.modal-content:first').find('#myModalLabel').html());
+			var shareURL=" http://"+location.host+"/demo?key="+searchKey;
+			//alert(shareURL);
+		
+			window.open("https://plus.google.com/share?url="+encodeURIComponent(shareURL), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
+		});
 		
 		//old
 		
@@ -417,8 +453,8 @@
 	    	//var wall_html="<div class='brick'><a href='"+getDataURL+"' data-toggle='modal' data-target='#"+_id+"'><img src='"+wallImg+"' width='100%'><div class='info'>";
 	    	var wall_html="<div class='brick'><a href='#' data-toggle='modal' data-target='#"+_id+"'><img src='"+wallImg+"' width='100%'><div class='info'>";
 	    	wall_html=wall_html+"<h3>"+name+"</h3>";
-	    	wall_html=wall_html+"<h5>更新頻率："+frequency+"/次</h5><br/>提供機關："+department+"</h5>";
-	    	wall_html=wall_html+"<br/><br/><div id='infoStorage' attr1='"+action+"' attr2='"+attr2Val+"' attr3='"+viewTypesStr+"' attr4='"+subscribeId+"' attrTableTHName='"+ tableTHName +"' ></div><div class='read-more'>觀看詳細資料...</div></div></a></div>";
+	    	wall_html=wall_html+"<h5>更新頻率："+frequency+"/次<br/>提供機關："+department+"</h5>";
+	    	wall_html=wall_html+"<div id='infoStorage' attr1='"+action+"' attr2='"+attr2Val+"' attr3='"+viewTypesStr+"' attr4='"+subscribeId+"' attrTableTHName='"+ tableTHName +"' ></div><div class='read-more'>觀看詳細資料...</div></div></a></div>";
 	    	
 	    	$("#freewall").append(wall_html);
 	    
@@ -427,6 +463,29 @@
 	    		//alert(value_dvt.name);
 	    	});
 	    	$('#searchAjaxLoad').remove();
+ 	}
+ 	function validate()
+ 	{
+ 		//$.get(validateURL, function(data){
+			//alert(validateURL);
+			if($('#userid').val()!=checkUserId||$('#userpwd').val()!=checkPassword)
+			{
+				alert("無此帳號或密碼錯誤!");
+			}
+			else
+			{
+				alert("登入成功");
+				//無法在開啟
+				$('#userLogInButtom').attr("data-target","");
+				$("#loginBlock").modal('toggle');
+				loginSuccess= true;
+			}	
+			
+			if(loginSuccess)
+			{
+				loginSuccessEvent();
+			}
+ 		//});
  	}
  	function loginSuccessEvent()
  	{
@@ -468,7 +527,7 @@
 	
 </head>
 
-  <body>
+  <body id='bodyStyle'>
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="header-block">
       <div class="container">
 		<a class="navbar-brand" href="#" name="logoImg"><img src="img/OReader_logo.png" width="150px" height="40px"></a>
@@ -535,7 +594,7 @@
 						    <label for="userpwd">密碼</label>
 						    <input type="password" class="form-control" id="userpwd" placeholder="輸入密碼...">
 						  </div>
-						  <button type="submit" class="btn btn-primary" name='userlogin'>登入</button>
+						  <input type="button" class="btn btn-primary" name="userlogin" value="登入">
 						</form>
 					</div>
 					<!-- <div class="modal-body">

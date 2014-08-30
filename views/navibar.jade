@@ -1,4 +1,4 @@
-div.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+div#header-block.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
 	div.container
 		div.navbar-header
 			button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
@@ -6,23 +6,21 @@ div.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
-			a.navbar-brand(href='#')
+			a.navbar-brand(href='#',name='logoImg')
 				img(src='img/OReader_logo.png', width='150px', height='40px')
 		div.collapse.navbar-collapse
 			ul.nav.navbar-nav.navbar-right
 				li
-					a(href='#', data-toggle='collapse', data-target='#searchBlock')
-						img(src='img/OReader_icon_search.png', width='30px', height='30px')
-						搜尋
+					a#searchButton(href='#', data-toggle='collapse', data-target='#searchBlock')
+						
 				- if (auth)
 					li.dropdown
-						a.dropdown-toggle(href='#', data-toggle='dropdown') #{user._id}
+						a.dropdown-toggle(href='#', data-toggle='dropdown' style='color:#FFF') #{user._id}
 							span.caret
 						ul.dropdown-menu(role='menu')
 							li
 								a(href='logout') 登出
 				- else
 					li
-						a(href='#', data-toggle='modal', data-target='#loginBlock')
-							img(src='img/OReader_icon_user.png', width='30px', height='30px')
-							登入
+						a#userLogInButtom(href='#', data-toggle='modal', data-target='#loginBlock')
+							

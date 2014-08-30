@@ -58,7 +58,7 @@ opacity: .5;
 }
 /*FREEWALL³]©w*/
 body {
-		padding-top:64px;
+		padding-top:60px;
 	}
 .free-wall {
 	margin: 15px 10px 70px 10px;
@@ -119,7 +119,7 @@ div#footer{
 	width:150px;
 }
 /*BODY*/
-#bodyStyle{
+body{
 	background-image: url(../img/bg.png);
 	background-position: right top;
 	background-repeat: repeat-x;
@@ -127,6 +127,14 @@ div#footer{
 	background-attachment:fixed;
 }
 /*HEADER*/
+.navbar-brand {
+float: left;
+height: 60px;
+padding: 0px 0px;
+font-size: 18px;
+line-height: 20px;
+margin-left: -15px;
+}
 #header-block {
 	background-image: url(../img/headerbg.png);
 	background-position: center top;
@@ -146,8 +154,8 @@ div#footer{
 }
 #searchButton, #userLogInButtom{
 	display:inline-block;
-	width: 50px;
-	height:50px;
+	width: 40px;
+	height:40px;
 	margin:10px 5px 5px 5px;
 	float:right;
 }
@@ -210,23 +218,18 @@ div#footer{
 #icon_data{float:left;  width:auto; height:48px;}
 #icon_social{float:left;  width:auto; height:48px;}
 #icon_fav{float:left;  width:auto; height:48px;}
-#icon_data_csv{display:block; float:left;  width:48px; height:48px; background: url("../img/icon_data_csv.png") no-repeat center center;cursor: pointer;}
-#icon_data_json{display:block; float:left; width:69px; height:48px; background: url("../img/icon_data_json.png") no-repeat center center;cursor: pointer;}
-#icon_data_xml{display:block; float:left; width:48px; height:48px; background: url("../img/icon_data_xml.png") no-repeat center center;cursor: pointer;}
-#icon_social_facebook{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_facebook.png") no-repeat center center;cursor: pointer;}
-#icon_social_google{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_google.png") no-repeat center center;cursor: pointer;}
-#icon_social_plurk{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_plurk.png") no-repeat center center;cursor: pointer;}
-#icon_social_twitter{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_twitter.png") no-repeat center center;cursor: pointer;}
-#icon_view_chart{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_chart.png") no-repeat center center;cursor: pointer;}
-#icon_view_chart2{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_chart2.png") no-repeat center center;cursor: pointer;}
-#icon_view_map{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_map.png") no-repeat center center;cursor: pointer;}
-#icon_view_table{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_table.png") no-repeat center center;cursor: pointer;}
-#icon_favorite{display:block; float:left; width:48px; height:48px; background: url("../img/icon_favorite.png") no-repeat center center; cursor: pointer;}
-#icon_view_chart_g{display:block;float:left; width:48px; height:48px; background: url("../img/icon_view_chart_g.png") no-repeat center center;cursor: pointer;}
-#icon_view_map_g{display:block;float:left; width:48px; height:48px; background: url("../img/icon_view_map_g.png") no-repeat center center;cursor: pointer;}
-#icon_view_table_g{display:block;float:left; width:48px; height:48px; background: url("../img/icon_view_table_g.png") no-repeat center center;cursor: pointer;}
-#icon_favorite_g{display:block;float:left; width:48px; height:48px; background: url("../img/icon_favorite_g.png") no-repeat center center;cursor: pointer;}
-
+#icon_data_csv{display:block; float:left;  width:48px; height:48px; background: url("../img/icon_data_csv.png") no-repeat center center;}
+#icon_data_json{display:block; float:left; width:69px; height:48px; background: url("../img/icon_data_json.png") no-repeat center center;}
+#icon_data_xml{display:block; float:left; width:48px; height:48px; background: url("../img/icon_data_xml.png") no-repeat center center;}
+#icon_social_facebook{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_facebook.png") no-repeat center center;}
+#icon_social_google{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_google.png") no-repeat center center;}
+#icon_social_plurk{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_plurk.png") no-repeat center center;}
+#icon_social_twitter{display:block; float:left; width:48px; height:48px; background: url("../img/icon_social_twitter.png") no-repeat center center;}
+#icon_view_chart{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_chart.png") no-repeat center center;}
+#icon_view_chart2{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_chart2.png") no-repeat center center;}
+#icon_view_map{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_map.png") no-repeat center center;}
+#icon_view_table{display:block; float:left; width:48px; height:48px; background: url("../img/icon_view_table.png") no-repeat center center;}
+#icon_favorite{display:block; float:left; width:48px; height:48px; background: url("../img/icon_favorite.png") no-repeat center center; }
 
 .noViewSepia{
       -webkit-filter:sepia(1);

@@ -1,25 +1,3 @@
 div.container
 	div#freewall.free-wall
 		- if (auth)
-			- for (var i = 0;i < user.subscribes.length;i++)
-				div.brick
-					a(href='#', data-toggle='modal', data-target='##{user.subscribes[i].metaData._id}')
-						- var metaData = user.subscribes[i].metaData
-						- var viewType = user.subscribes[i].preferViewType._id
-						- var viewTypeIcon
-						- if (viewType === 'line_chart' || viewType === 'bar_chart')
-							- viewType = 'img/view/chart.png'
-						- else if (viewType === 'map')
-							- viewType = 'img/view/map.png'
-						- else
-							- viewType = 'img/view/table.png'
-						img(src='#{viewType}', width='100%')
-						div.info
-							h3 #{metaData.name}
-							h5 更新頻率：#{metaData.frequency}
-							br
-							h5 提供機關：#{metaData.department}
-							br
-							br
-							div#infoStorage(attr1='#{metaData.action}', attr2='#{user.subscribes[i].preferViewType._id}')
-							div.read-more 觀看詳細資料...
